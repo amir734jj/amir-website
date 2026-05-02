@@ -3,6 +3,7 @@
 
 # Generated output
 dist/
+.idea
 
 ### Csharp ###
 ## Ignore Visual Studio temporary files, build results, and
