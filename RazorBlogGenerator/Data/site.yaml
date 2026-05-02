@@ -1,0 +1,10 @@
+# $schema: ../Schemas/site-config.schema.json
+site_name: "Amir Hesamian"
+footer_text: "Amir Hesamian"
+
+navbar:
+  - label: "Home"
+    href: "/"
+  - label: "CV"
+    href: "/cv/"
+

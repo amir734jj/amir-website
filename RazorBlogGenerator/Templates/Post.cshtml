@@ -1,0 +1,14 @@
+@using RazorBlogGenerator.Models
+@model RenderContext
+@{
+    var post = (PostModel)Model.Page;
+}
+
+<article>
+  <a href="/" class="text-decoration-none mb-3 d-inline-block">&larr; Back to blog</a>
+  <p class="text-muted small">@post.PublishedOn</p>
+  <h1 class="display-6 fw-bold">@post.Title</h1>
+  <p class="lead text-secondary">@post.Excerpt</p>
+  <hr />
+  <div>@Raw(post.RenderedHtml)</div>
+</article>

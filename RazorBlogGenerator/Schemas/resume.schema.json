@@ -1,0 +1,190 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "ResumeModel",
+  "definitions": {
+    "ContactData": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "github_label": {
+          "type": "string"
+        },
+        "github_url": {
+          "type": "string"
+        },
+        "linkedin_label": {
+          "type": "string"
+        },
+        "linkedin_url": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
+    },
+    "EducationData": {
+      "type": "object",
+      "properties": {
+        "school": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "degree": {
+          "type": "string"
+        },
+        "period": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SkillData": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "ExperienceData": {
+      "type": "object",
+      "properties": {
+        "company": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "period": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleData"
+          }
+        }
+      }
+    },
+    "RoleData": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "period": {
+          "type": "string"
+        },
+        "bullets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ContentPage": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string"
+        },
+        "template": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content_type": {
+          "$ref": "#/definitions/ContentType"
+        }
+      }
+    },
+    "ContentType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "Yaml",
+        "Markdown"
+      ],
+      "enum": [
+        "yaml",
+        "markdown"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/ContentPage"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tagline": {
+          "type": "string"
+        },
+        "contact": {
+          "$ref": "#/definitions/ContactData"
+        },
+        "education": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EducationData"
+          }
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SkillData"
+          }
+        },
+        "experience": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExperienceData"
+          }
+        },
+        "honors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "activities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "work_authorization": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore
+        working-directory: RazorBlogGenerator
+
+      - name: Build
+        run: dotnet build --no-restore
+        working-directory: RazorBlogGenerator
+
+      - name: Generate schemas
+        run: dotnet run -- schema
+        working-directory: RazorBlogGenerator
+
+      - name: Validate YAML
+        run: dotnet run -- validate
+        working-directory: RazorBlogGenerator
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Heroku Container Registry
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
+
+      - name: Build and push Docker image
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: |
+          docker build -t registry.heroku.com/$HEROKU_APP_NAME/web -f RazorBlogGenerator/Dockerfile RazorBlogGenerator
+          docker push registry.heroku.com/$HEROKU_APP_NAME/web
+
+      - name: Release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: heroku container:release web --app $HEROKU_APP_NAME

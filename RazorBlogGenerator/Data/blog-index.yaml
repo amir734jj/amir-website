@@ -1,0 +1,7 @@
+# $schema: ../Schemas/blog-index.schema.json
+model: BlogIndexModel
+template: BlogIndex.cshtml
+slug: /
+title: "Amir Hesamian"
+content_type: yaml
+---

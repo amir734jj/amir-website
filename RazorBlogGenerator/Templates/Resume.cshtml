@@ -1,0 +1,94 @@
+@using RazorBlogGenerator.Models
+@model RenderContext
+@{
+    var r = (ResumeModel)Model.Page;
+}
+
+<div class="bg-light border rounded-3 p-4 mb-4">
+  <p class="text-uppercase text-muted small fw-semibold mb-1">Software Engineer</p>
+  <h1 class="display-5 fw-bold">@r.Name</h1>
+  <p class="lead text-secondary">@r.Tagline</p>
+  <div class="d-flex flex-wrap gap-3 mt-3">
+    <span><i class="bi bi-geo-alt"></i> @r.Contact.Address</span>
+    <a href="mailto:@r.Contact.Email"><i class="bi bi-envelope"></i> @r.Contact.Email</a>
+    <a href="@r.Contact.GithubUrl" target="_blank" rel="noopener"><i class="bi bi-github"></i> @r.Contact.GithubLabel</a>
+    <a href="@r.Contact.LinkedinUrl" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i> @r.Contact.LinkedinLabel</a>
+    <span><i class="bi bi-telephone"></i> @r.Contact.Phone</span>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="h6 text-uppercase text-primary fw-bold">Education</h2>
+    @foreach (var item in r.Education)
+    {
+      <div class="mb-3">
+        <div class="d-flex justify-content-between flex-wrap">
+          <strong>@item.School</strong>
+          <span class="text-muted">@item.Period</span>
+        </div>
+        <p class="text-secondary mb-1">@item.Degree &middot; @item.Location</p>
+        @if (item.Details.Count > 0)
+        {
+          <ul class="mb-0">
+            @foreach (var d in item.Details) { <li>@d</li> }
+          </ul>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="h6 text-uppercase text-primary fw-bold">Technical Skills</h2>
+    @foreach (var s in r.Skills)
+    {
+      <p class="mb-1"><strong>@s.Category:</strong> @s.Value</p>
+    }
+  </div>
+</div>
+
+<div class="card mb-4" id="experience">
+  <div class="card-body">
+    <h2 class="h6 text-uppercase text-primary fw-bold">Experience</h2>
+    @foreach (var item in r.Experience)
+    {
+      <div class="mb-4 border-bottom pb-3">
+        <div class="d-flex justify-content-between flex-wrap">
+          <strong>@item.Company</strong>
+          <span class="text-muted">@item.Period</span>
+        </div>
+        <p class="text-secondary mb-2">@item.Title &middot; @item.Location</p>
+        @foreach (var role in item.Roles)
+        {
+          <h3 class="h6 fw-semibold mb-1">@role.Name @if (!string.IsNullOrWhiteSpace(role.Period)) { <small class="text-muted fw-normal">@role.Period</small> }</h3>
+          <ul>
+            @foreach (var b in role.Bullets) { <li>@b</li> }
+          </ul>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="h6 text-uppercase text-primary fw-bold">Honors &amp; Awards</h2>
+        <ul class="mb-0">@foreach (var h in r.Honors) { <li>@h</li> }</ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="h6 text-uppercase text-primary fw-bold">Additional Activities</h2>
+        <ul>@foreach (var a in r.Activities) { <li>@a</li> }</ul>
+        <h2 class="h6 text-uppercase text-primary fw-bold mt-3">Work Authorization</h2>
+        <p class="mb-0">@r.WorkAuthorization</p>
+      </div>
+    </div>
+  </div>
+</div>

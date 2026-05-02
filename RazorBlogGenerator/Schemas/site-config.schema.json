@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "SiteConfig",
+  "type": "object",
+  "properties": {
+    "site_name": {
+      "type": "string"
+    },
+    "footer_text": {
+      "type": "string"
+    },
+    "navbar": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/NavLink"
+      }
+    }
+  },
+  "definitions": {
+    "NavLink": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

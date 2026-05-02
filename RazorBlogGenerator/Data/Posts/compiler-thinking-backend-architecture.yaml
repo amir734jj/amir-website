@@ -1,0 +1,8 @@
+# $schema: ../../Schemas/post.schema.json
+model: PostModel
+template: Post.cshtml
+slug: posts/compiler-thinking-backend-architecture/
+title: "Why I Like Building with Compilers"
+published_on: "2026-04-28"
+excerpt: "How compiler thinking improves backend architecture and correctness."
+content_type: markdown

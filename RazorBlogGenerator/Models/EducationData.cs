@@ -1,0 +1,10 @@
+﻿namespace RazorBlogGenerator.Models;
+
+public class EducationData
+{
+    public string School { get; set; } = null!;
+    public string Location { get; set; } = null!;
+    public string Degree { get; set; } = null!;
+    public string Period { get; set; } = null!;
+    public List<string> Details { get; set; } = [];
+}

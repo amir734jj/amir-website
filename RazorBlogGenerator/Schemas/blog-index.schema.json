@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "BlogIndexModel",
+  "definitions": {
+    "ContentPage": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string"
+        },
+        "template": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content_type": {
+          "$ref": "#/definitions/ContentType"
+        }
+      }
+    },
+    "ContentType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "Yaml",
+        "Markdown"
+      ],
+      "enum": [
+        "yaml",
+        "markdown"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/ContentPage"
+    },
+    {
+      "type": "object"
+    }
+  ]
+}

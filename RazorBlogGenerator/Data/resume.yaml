@@ -1,0 +1,118 @@
+# $schema: ../Schemas/resume.schema.json
+model: ResumeModel
+template: Resume.cshtml
+slug: cv/
+title: "Amir Hesamian - CV"
+content_type: yaml
+---
+name: "Seyedamirhossein Hesamian (Amir)"
+tagline: "Software Engineer · Compilers · Distributed Systems"
+
+contact:
+  address: "Whitefish Bay, WI"
+  email: "Hesamian@uwm.edu"
+  github_label: "github.com/amir734jj"
+  github_url: "https://github.com/amir734jj"
+  linkedin_label: "linkedin.com/in/hesamian"
+  linkedin_url: "https://linkedin.com/in/hesamian"
+  phone: "(414) 736-2240"
+
+education:
+  - school: "University of Wisconsin-Milwaukee"
+    location: "Milwaukee, WI"
+    degree: "Ph.D., Computer Science"
+    period: "Jan 2018 - Dec 2023"
+    details:
+      - "Focused on Compilers, Type Systems, and Attribute Grammars"
+      - "Advisor: Dr. John Boyland"
+      - "Thesis: Statically Scheduling Circular Remote Attributes Grammars"
+
+  - school: "University of Wisconsin-Milwaukee"
+    location: "Milwaukee, WI"
+    degree: "M.S., Computer Science"
+    period: "Sep 2015 - May 2017"
+    details:
+      - "Focused on Lattice cryptography (post-quantum crypto) and LWE-KEX"
+      - "Advisor: Dr. Guangwu Xu"
+      - "Thesis: Analysis of BCNS and NewHope key-exchange protocols"
+
+  - school: "University of Wisconsin-Milwaukee"
+    location: "Milwaukee, WI"
+    degree: "B.S., Computer Science (with Honors)"
+    period: "Sep 2011 - May 2015"
+    details: []
+
+skills:
+  - category: "Languages"
+    value: "C#, Java, JavaScript, TypeScript, Scala, SQL, Prolog, MIPS, Python, Ruby, F#, SML"
+  - category: "Front-end"
+    value: "HTML, CSS, Angular, React, Svelte, Blazor"
+  - category: "Back-end"
+    value: ".NET, Node.js, Express.js, Sinatra, Django, Flask, Spring Boot"
+  - category: "Data"
+    value: "SQL, MongoDB, Cosmos DB, Azure Blob, Azure Table Storage"
+
+experience:
+  - company: "Microsoft"
+    location: "Redmond, WA (Remote)"
+    title: "Software Engineer II"
+    period: "Apr 2021 - Present"
+    roles:
+      - name: "Azure Core / OneFleet - Service Fabric"
+        period: "Apr 2024 - Present"
+        bullets:
+          - "Working on service fabric hosting/observability and fixing long-standing bugs and feature gaps."
+          - "On-call for triage and hosting incidents, including mitigation and RCA."
+      - name: "Azure Edge"
+        period: "Jan 2023 - Mar 2024"
+        bullets:
+          - "Worked on Azure Stack Edge infrastructure and data center management through BMC Redfish APIs."
+          - "Enabled bare-metal server allocation via Azure portal workflows."
+      - name: "Azure EdgeZone Platform"
+        period: "Apr 2021 - Dec 2022"
+        bullets:
+          - "Enabled Azure Site Recovery and Azure Backup support for EdgeZone data centers."
+          - "Contributed to BCDR services in C# (Windows) and Python (Linux) for VM filesystem replication."
+          - "Automated swagger/SDK/PowerShell generation and expanded functional test coverage with PowerBI insights."
+
+  - company: "Northwestern Mutual"
+    location: "Milwaukee, WI"
+    title: "Full-Stack Software Engineer"
+    period: "Nov 2017 - Mar 2021"
+    roles:
+      - name: "Core Platform & Applications"
+        period: ""
+        bullets:
+          - "Built bond benchmarking systems with MongoDB, .NET Core, and React/Redux."
+          - "Implemented business rule engine features using LINQ expression trees and dynamic proxy/AOP patterns."
+          - "Created distributed and real-time tooling with Akka.NET, SignalR, Kafka, Event Hub, and Vue.js."
+          - "Led reusable platform work: boilerplates, runtime code generation libraries, CSV tooling, and JWT FSM flows."
+
+  - company: "UW-Milwaukee Department of Computer Science"
+    location: "Milwaukee, WI"
+    title: "Adjunct Instructor / Teaching Assistant"
+    period: "2015 - 2022"
+    roles:
+      - name: "Instruction"
+        period: "Jan 2022 - May 2022"
+        bullets:
+          - "Instructor for Introduction to Compilers."
+          - "Dockerized the COOL compiler toolchain and modified SPIM for COOL exception support."
+      - name: "Teaching Assistant"
+        period: "Sep 2015 - May 2020"
+        bullets:
+          - "Supported Data Structures/Algorithms, Compiler Implementation Lab, and MIPS Assembly courses."
+          - "Prepared labs, exam coding questions, and weekly programming assignments."
+
+honors:
+  - "FEF / AFS Scholarship (2014, 2015, 2017)"
+  - "Certificate of Merit for Mathematical Science 234 (2013)"
+  - "Dean's List (2011-2014)"
+  - "College of Engineering and Applied Science Honors Graduate (2015)"
+  - "1st place, Northwestern Mutual Fusion Hackathon (2018)"
+
+activities:
+  - "Built the Tour of Milwaukee website for annual international student onboarding."
+  - "Participated in Northwestern Mutual ML Hackathon with a social network analyzer prototype."
+
+work_authorization: "Naturalized U.S. citizen (naturalized in 2015)"

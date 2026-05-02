@@ -1,0 +1,42 @@
+@using RazorBlogGenerator.Models
+@model RenderContext
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>@Model.Page.Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" crossorigin="anonymous" />
+  <style>
+    #nav-toggle { display: none; }
+    .nav-toggle-label { display: none; cursor: pointer; font-size: 1.5rem; line-height: 1; }
+    @@media (max-width: 767.98px) {
+      .nav-toggle-label { display: block; }
+      .nav-collapse { display: none; flex-direction: column; width: 100%; padding-top: .5rem; }
+      #nav-toggle:checked ~ .nav-collapse { display: flex; }
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <nav class="navbar bg-body-tertiary border-bottom mb-4">
+    <div class="container flex-wrap">
+      <a class="navbar-brand fw-bold" href="/">@Model.Site.SiteName</a>
+      <input type="checkbox" id="nav-toggle" aria-label="Toggle navigation" />
+      <label for="nav-toggle" class="nav-toggle-label"><i class="bi bi-list"></i></label>
+      <ul class="navbar-nav flex-row ms-auto gap-3 nav-collapse">
+        @foreach (var link in Model.Site.Navbar)
+        {
+          <li class="nav-item"><a class="nav-link" href="@link.Href">@link.Label</a></li>
+        }
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container pb-5">@Raw(Model.BodyHtml)</main>
+
+  <footer class="border-top mt-auto">
+    <div class="container py-3 text-muted small">&copy; @DateTime.UtcNow.Year @Model.Site.FooterText</div>
+  </footer>
+</body>
+</html>
