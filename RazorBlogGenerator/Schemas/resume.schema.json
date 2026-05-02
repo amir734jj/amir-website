@@ -148,6 +148,12 @@
         "tagline": {
           "type": "string"
         },
+        "profile_image": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
         "contact": {
           "$ref": "#/definitions/ContactData"
         },

@@ -7,6 +7,7 @@ content_type: yaml
 ---
 name: "Seyedamirhossein Hesamian (Amir)"
 tagline: "Software Engineer · Compilers · Distributed Systems"
+profile_image: "/assets/images/profile.svg"
 
 contact:
   address: "Whitefish Bay, WI"

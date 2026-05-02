@@ -37,6 +37,7 @@ public static class SchemaGenerator
                 def.AllowAdditionalProperties = true;
             }
 
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (schema.AllOf != null)
             {
                 foreach (var item in schema.AllOf)

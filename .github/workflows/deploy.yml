@@ -46,7 +46,7 @@ jobs:
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         run: |
-          docker build -t registry.heroku.com/$HEROKU_APP_NAME/web -f RazorBlogGenerator/Dockerfile RazorBlogGenerator
+          docker build -t registry.heroku.com/$HEROKU_APP_NAME/web .
           docker push registry.heroku.com/$HEROKU_APP_NAME/web
 
       - name: Release

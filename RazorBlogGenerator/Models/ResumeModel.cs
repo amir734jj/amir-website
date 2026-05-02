@@ -5,6 +5,7 @@ public class ResumeModel : ContentPage
 {
     public string Name { get; set; } = null!;
     public string Tagline { get; set; } = null!;
+    public string? ProfileImage { get; set; }
     public ContactData Contact { get; set; } = null!;
     public List<EducationData> Education { get; set; } = [];
     public List<SkillData> Skills { get; set; } = [];
