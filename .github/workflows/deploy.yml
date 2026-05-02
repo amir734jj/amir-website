@@ -38,23 +38,19 @@ jobs:
   deploy:
     needs: validate
     runs-on: ubuntu-latest
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Heroku CLI
+        run: curl -fsSL https://cli-assets.heroku.com/install.sh | sh
+
       - name: Login to Heroku Container Registry
-        env:
-          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN }}
-        run: echo "$HEROKU_TOKEN" | docker login --username=_ --password-stdin registry.heroku.com
+        run: heroku container:login
 
-      - name: Build and push Docker image
-        env:
-          HEROKU_APP_NAME: ${{ env.HEROKU_APP_NAME }}
-        run: |
-          docker build -t registry.heroku.com/$HEROKU_APP_NAME/web .
-          docker push registry.heroku.com/$HEROKU_APP_NAME/web
+      - name: Build & Push image
+        run: heroku container:push web --app ${{ env.HEROKU_APP_NAME }}
 
-      - name: Release
-        env:
-          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN }}
-          HEROKU_APP_NAME: ${{ env.HEROKU_APP_NAME }}
-        run: heroku container:release web --app $HEROKU_APP_NAME
+      - name: Release container
+        run: heroku container:release web --app ${{ env.HEROKU_APP_NAME }}
