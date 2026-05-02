@@ -6,6 +6,7 @@ on:
 
 env:
   HEROKU_APP_NAME: "amir-website"
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   validate:
