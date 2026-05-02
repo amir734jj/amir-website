@@ -26,6 +26,7 @@
     <Content Include="Templates\**\*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Data\**\*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Static\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Schemas\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
