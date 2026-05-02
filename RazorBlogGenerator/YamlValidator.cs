@@ -1,5 +1,4 @@
 using NJsonSchema;
-using NJsonSchema.Validation;
 using Newtonsoft.Json;
 using RazorBlogGenerator.Models;
 using Serilog;

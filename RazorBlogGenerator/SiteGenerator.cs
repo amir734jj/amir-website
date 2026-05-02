@@ -1,5 +1,4 @@
 using Markdig;
-using Microsoft.Extensions.DependencyInjection;
 using RazorBlogGenerator.Models;
 using RazorLight;
 using Serilog;
@@ -129,33 +128,41 @@ public static class SiteGenerator
 
         ContentPage page;
 
-        if (meta.ContentType == ContentType.Markdown)
+        switch (meta.ContentType)
         {
-            page = (ContentPage)Deserializer.Deserialize(metaYaml, modelType)!;
-
-            if (page is PostModel post)
+            case ContentType.Markdown:
             {
-                // Look for companion .md file, fall back to body after ---
-                var mdPath = Path.ChangeExtension(filePath, ".md");
-                var markdown = File.Exists(mdPath)
-                    ? File.ReadAllText(mdPath)
-                    : bodyRaw;
+                page = (ContentPage)Deserializer.Deserialize(metaYaml, modelType)!;
 
-                if (!string.IsNullOrWhiteSpace(markdown))
+                if (page is PostModel post)
                 {
-                    post.RenderedHtml = Markdown.ToHtml(markdown, markdownPipeline);
+                    // Look for companion .md file, fall back to body after ---
+                    var mdPath = Path.ChangeExtension(filePath, ".md");
+                    var markdown = File.Exists(mdPath)
+                        ? File.ReadAllText(mdPath)
+                        : bodyRaw;
+
+                    if (!string.IsNullOrWhiteSpace(markdown))
+                    {
+                        post.RenderedHtml = Markdown.ToHtml(markdown, markdownPipeline);
+                    }
                 }
+
+                break;
             }
-        }
-        else
-        {
-            var yamlToDeserialize = string.IsNullOrWhiteSpace(bodyRaw) ? metaYaml : bodyRaw;
-            page = (ContentPage)Deserializer.Deserialize(yamlToDeserialize, modelType)!;
-            page.Model = meta.Model;
-            page.Template = meta.Template;
-            page.Slug = meta.Slug;
-            page.Title = meta.Title;
-            page.ContentType = meta.ContentType;
+            case ContentType.Yaml:
+            {
+                var yamlToDeserialize = string.IsNullOrWhiteSpace(bodyRaw) ? metaYaml : bodyRaw;
+                page = (ContentPage)Deserializer.Deserialize(yamlToDeserialize, modelType)!;
+                page.Model = meta.Model;
+                page.Template = meta.Template;
+                page.Slug = meta.Slug;
+                page.Title = meta.Title;
+                page.ContentType = meta.ContentType;
+                break;
+            }
+            default:
+                throw new ArgumentException("Unsupported meta type", nameof(meta));
         }
 
         return page;

@@ -1,4 +1,4 @@
-# $schema: ../../Schemas/post.schema.json
+# $schema: ../../Schemas/post-model.schema.json
 model: PostModel
 template: Post.cshtml
 slug: posts/compiler-thinking-backend-architecture/

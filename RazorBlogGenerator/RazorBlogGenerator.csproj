@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -23,10 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Templates\**\*" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Data\**\*" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Static\**\*" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Schemas\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="Templates\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="Data\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="Static\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="Schemas\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

@@ -2,10 +2,6 @@
 
 A C# Razor-based static site generator. Content is authored in YAML files with typed C# models, rendered through Razor templates, and output as static HTML.
 
-## Prerequisites
-
-- [.NET 10 SDK](https://dotnet.microsoft.com/download) or [Docker](https://www.docker.com/)
-
 ## Run locally
 
 ```bash
@@ -24,9 +20,11 @@ dotnet run -- build -o /path/to/output
 ### Other commands
 
 ```bash
-dotnet run -- schema       # Generate JSON schemas from C# models
-dotnet run -- validate     # Validate YAML files against schemas
-dotnet run -- --help       # Show all commands
+dotnet run -- watch              # Watch for changes, rebuild, and serve at http://localhost:8080
+dotnet run -- watch -p 3000      # Custom port
+dotnet run -- schema             # Generate JSON schemas from C# models
+dotnet run -- validate           # Validate YAML files against schemas
+dotnet run -- --help             # Show all commands
 ```
 
 ## Run with Docker

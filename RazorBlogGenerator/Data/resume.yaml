@@ -1,4 +1,4 @@
-# $schema: ../Schemas/resume.schema.json
+# $schema: ../Schemas/resume-model.schema.json
 model: ResumeModel
 template: Resume.cshtml
 slug: cv/

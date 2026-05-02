@@ -30,7 +30,8 @@
       <ul class="navbar-nav flex-row ms-auto gap-3 nav-collapse">
         @foreach (var link in Model.Site.Navbar)
         {
-          <li class="nav-item"><a class="nav-link" href="@link.Href">@link.Label</a></li>
+          var active = ("/" + Model.Page.Slug.Trim('/')).TrimEnd('/') == link.Href.TrimEnd('/') ? " active" : "";
+          <li class="nav-item"><a class="nav-link@(active)" href="@link.Href" @if (!string.IsNullOrEmpty(active)) { <text>aria-current="page"</text> }>@link.Label</a></li>
         }
       </ul>
     </div>
