@@ -4,6 +4,9 @@ on:
   push:
     branches: [master]
 
+env:
+  HEROKU_APP_NAME: "amir-website"
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -39,8 +42,8 @@ jobs:
 
       - name: Login to Heroku Container Registry
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
+          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN }}
+        run: echo "$HEROKU_TOKEN" | docker login --username=_ --password-stdin registry.heroku.com
 
       - name: Build and push Docker image
         env:
@@ -51,6 +54,6 @@ jobs:
 
       - name: Release
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         run: heroku container:release web --app $HEROKU_APP_NAME
