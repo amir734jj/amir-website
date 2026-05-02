@@ -5,7 +5,7 @@ COPY . .
 RUN dotnet restore RazorBlogGenerator/RazorBlogGenerator.csproj
 RUN dotnet publish RazorBlogGenerator/RazorBlogGenerator.csproj -c Release -o /app
 
-FROM mcr.microsoft.com/dotnet/runtime:10.0-preview AS generate
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-preview AS generate
 WORKDIR /app
 COPY --from=build /app .
 
