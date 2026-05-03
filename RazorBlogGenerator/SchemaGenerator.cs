@@ -46,11 +46,17 @@ public static class SchemaGenerator
     {
         schema.AllowAdditionalProperties = true;
         foreach (var def in schema.Definitions.Values)
+        {
             AllowAdditionalEverywhere(def);
+        }
+
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (schema.AllOf != null)
         {
             foreach (var item in schema.AllOf)
+            {
                 AllowAdditionalEverywhere(item);
+            }
         }
     }
 }

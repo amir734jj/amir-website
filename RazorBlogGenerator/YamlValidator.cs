@@ -46,6 +46,7 @@ public static class YamlValidator
             var yaml = await File.ReadAllTextAsync(file);
 
             var meta = YamlDeserializer.Deserialize<Dictionary<string, object>>(yaml);
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (meta is null || !meta.TryGetValue("model", out var modelObj))
             {
                 Log.Warning("{File}: missing 'model' field, skipping", file);

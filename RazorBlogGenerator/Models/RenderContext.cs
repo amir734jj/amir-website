@@ -7,30 +7,6 @@ public class RenderContext
     public required SiteConfig Site { get; init; }
     public string BodyHtml { get; init; } = "";
 
-    public IReadOnlyList<PostModel> GetDirectChildren()
-    {
-        var currentRoute = Page.Route.TrimEnd('/') + "/";
-        return AllPages
-            .OfType<PostModel>()
-            .Where(p =>
-            {
-                if (p.Hidden || p.Route == Page.Route)
-                {
-                    return false;
-                }
-
-                if (!p.Route.StartsWith(currentRoute))
-                {
-                    return false;
-                }
-
-                var remaining = p.Route[currentRoute.Length..].Trim('/');
-                return !remaining.Contains('/');
-            })
-            .OrderByDescending(p => p.PublishedOn)
-            .ToList();
-    }
-
     public IReadOnlyList<PostModel> GetAllDescendants()
     {
         var currentRoute = Page.Route.TrimEnd('/') + "/";
@@ -49,11 +25,11 @@ public class RenderContext
 
         crumbs.Add(("Home", "/"));
 
-        for (var i = 0; i < segments.Length; i++)
+        foreach (var segment in segments)
         {
-            path += segments[i] + "/";
+            path += segment + "/";
             var matchedPage = AllPages.FirstOrDefault(p => p.Route == path);
-            var label = matchedPage?.Title ?? segments[i];
+            var label = matchedPage?.Title ?? segment;
             crumbs.Add((label, path));
         }
 
