@@ -1,8 +1,0 @@
-{
-    "vscode-nmake-tools.workspaceBuildDirectories": [],
-    "yaml.schemas": {
-        "./RazorBlogGenerator/Schemas/post-model.schema.json": "RazorBlogGenerator/Data/**/index.yaml",
-        "./RazorBlogGenerator/Schemas/index.schema.json": "RazorBlogGenerator/Data/index.yaml",
-        "./RazorBlogGenerator/Schemas/site-config.schema.json": "RazorBlogGenerator/Data/site.yaml"
-    }
-}
