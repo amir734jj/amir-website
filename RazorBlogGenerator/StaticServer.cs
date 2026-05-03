@@ -42,6 +42,13 @@ public static class StaticServer
             ServeUnknownFileTypes = true
         });
 
+        app.MapFallback(async context =>
+        {
+            context.Response.StatusCode = 404;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync($"404 - Not Found: {context.Request.Path}");
+        });
+
         Log.Information("Serving {Path} at http://localhost:{Port}", fullPath, port);
         await app.RunAsync($"http://0.0.0.0:{port}");
     }
