@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using RazorBlogGenerator.Models.Attributes;
 
 namespace RazorBlogGenerator.Models.CV;
 
-[SchemaName]
+[ContentSchema]
 public class ResumeModel : ContentPage
 {
     public string Name { get; set; } = null!;

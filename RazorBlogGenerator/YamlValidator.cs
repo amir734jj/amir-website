@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using NJsonSchema;
 using Newtonsoft.Json;
 using RazorBlogGenerator.Models.Attributes;
@@ -14,10 +19,10 @@ public static class YamlValidator
         .Build();
 
     private static readonly Dictionary<string, string> ModelToSchemaMap =
-        typeof(SchemaNameAttribute).Assembly
+        typeof(ContentSchemaAttribute).Assembly
             .GetTypes()
-            .Where(t => t.GetCustomAttributes(typeof(SchemaNameAttribute), false).Length > 0)
-            .ToDictionary(t => t.Name, SchemaNameAttribute.GetSchemaName);
+            .Where(t => t.GetCustomAttributes(typeof(ContentSchemaAttribute), false).Length > 0)
+            .ToDictionary(t => t.Name, ContentSchemaAttribute.GetSchemaName);
 
     public static async Task<int> ValidateAsync(string dataDir, string schemasDir)
     {

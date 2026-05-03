@@ -1,3 +1,6 @@
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NJsonSchema;
@@ -24,10 +27,10 @@ public static class SchemaGenerator
     {
         Directory.CreateDirectory(schemasDir);
 
-        var types = typeof(SchemaNameAttribute).Assembly
+        var types = typeof(ContentSchemaAttribute).Assembly
             .GetTypes()
-            .Where(t => t.GetCustomAttributes(typeof(SchemaNameAttribute), false).Length > 0)
-            .ToDictionary(SchemaNameAttribute.GetSchemaName, t => t);
+            .Where(t => t.GetCustomAttributes(typeof(ContentSchemaAttribute), false).Length > 0)
+            .ToDictionary(ContentSchemaAttribute.GetSchemaName, t => t);
 
         foreach (var (name, type) in types)
         {

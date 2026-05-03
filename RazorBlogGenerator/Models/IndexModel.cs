@@ -2,5 +2,5 @@ using RazorBlogGenerator.Models.Attributes;
 
 namespace RazorBlogGenerator.Models;
 
-[SchemaName("index")]
+[ContentSchema("index")]
 public class IndexModel : ContentPage;

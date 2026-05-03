@@ -1,7 +1,7 @@
 using AngleSharp.Html;
 using AngleSharp.Html.Parser;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace RazorBlogGenerator;
@@ -54,25 +54,17 @@ public static class DevServer
         Log.Information("Serving at http://localhost:{Port}", port);
 
         var fullDistPath = Path.GetFullPath(distDir);
-        var fileProvider = new PhysicalFileProvider(fullDistPath);
 
-        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-        {
-            WebRootPath = fullDistPath
-        });
+        var builder = WebApplication.CreateBuilder();
         builder.Logging.ClearProviders();
         builder.Services.AddSignalR();
         var app = builder.Build();
 
         _hubContext = app.Services.GetRequiredService<IHubContext<LiveReloadHub>>();
 
-        app.UseDefaultFiles(new DefaultFilesOptions { FileProvider = fileProvider });
-        app.UseStaticFiles(new StaticFileOptions
-        {
-            FileProvider = fileProvider,
-            ServeUnknownFileTypes = true
-        });
         app.MapHub<LiveReloadHub>("/__livereload");
+
+        StaticServer.ConfigureStaticServing(app, fullDistPath);
 
         await app.RunAsync($"http://localhost:{port}");
     }

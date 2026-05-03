@@ -1,4 +1,6 @@
-﻿namespace RazorBlogGenerator.Models.CV;
+﻿using System.Collections.Generic;
+
+namespace RazorBlogGenerator.Models.CV;
 
 public class ExperienceData
 {

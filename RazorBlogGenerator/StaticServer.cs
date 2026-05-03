@@ -15,14 +15,22 @@ public static class StaticServer
             return;
         }
 
-        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-        {
-            WebRootPath = fullPath
-        });
+        var builder = WebApplication.CreateBuilder();
         builder.Logging.ClearProviders();
 
         var app = builder.Build();
 
+        ConfigureStaticServing(app, fullPath);
+
+        Log.Information("Serving {Path} at http://localhost:{Port}", fullPath, port);
+        await app.RunAsync($"http://0.0.0.0:{port}");
+    }
+
+    public static void ConfigureStaticServing(WebApplication app, string fullPath)
+    {
+        var fileProvider = new PhysicalFileProvider(fullPath);
+
+        // Lowercase all paths + rewrite directory requests to index.html
         app.Use(async (context, next) =>
         {
             var path = context.Request.Path.Value ?? "/";
@@ -30,26 +38,32 @@ public static class StaticServer
             if (path != lower)
             {
                 context.Request.Path = lower;
+                path = lower;
             }
+
+            if (path.EndsWith('/'))
+            {
+                var candidate = path + "index.html";
+                if (fileProvider.GetFileInfo(candidate).Exists)
+                {
+                    context.Request.Path = candidate;
+                }
+            }
+
             await next();
         });
 
-        var fileProvider = new PhysicalFileProvider(fullPath);
-        app.UseDefaultFiles(new DefaultFilesOptions { FileProvider = fileProvider });
         app.UseStaticFiles(new StaticFileOptions
         {
             FileProvider = fileProvider,
             ServeUnknownFileTypes = true
         });
 
-        app.MapFallback(async context =>
+        app.Run(async context =>
         {
             context.Response.StatusCode = 404;
             context.Response.ContentType = "text/plain";
             await context.Response.WriteAsync($"404 - Not Found: {context.Request.Path}");
         });
-
-        Log.Information("Serving {Path} at http://localhost:{Port}", fullPath, port);
-        await app.RunAsync($"http://0.0.0.0:{port}");
     }
 }

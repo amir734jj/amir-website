@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using RazorBlogGenerator.Models.Attributes;
 
 namespace RazorBlogGenerator.Models;
 
-[SchemaName]
+[ContentSchema]
 public class SiteConfig
 {
     public string SiteName { get; set; } = "";

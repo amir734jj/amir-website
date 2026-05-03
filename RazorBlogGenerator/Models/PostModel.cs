@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using RazorBlogGenerator.Models.Attributes;
 using YamlDotNet.Serialization;
 
 namespace RazorBlogGenerator.Models;
 
-[SchemaName]
+[ContentSchema]
 public class PostModel : ContentPage
 {
     public string PublishedOn { get; set; } = null!;
