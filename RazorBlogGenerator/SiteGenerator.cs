@@ -181,7 +181,7 @@ public static class SiteGenerator
     private static string DeriveRoute(string filePath, string dataDir)
     {
         var dir = Path.GetDirectoryName(filePath)!;
-        var relative = Path.GetRelativePath(dataDir, dir).Replace('\\', '/');
+        var relative = Path.GetRelativePath(dataDir, dir).Replace('\\', '/').ToLowerInvariant();
         return relative == "." ? "/" : "/" + relative + "/";
     }
 
@@ -195,7 +195,7 @@ public static class SiteGenerator
                 continue;
             }
 
-            var relative = Path.GetRelativePath(dataDir, file).Replace('\\', '/');
+            var relative = Path.GetRelativePath(dataDir, file).Replace('\\', '/').ToLowerInvariant();
             var dest = Path.Combine(distDir, relative);
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
             File.Copy(file, dest, overwrite: true);
