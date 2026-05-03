@@ -1,3 +1,5 @@
+using AngleSharp.Html;
+using AngleSharp.Html.Parser;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
@@ -9,9 +11,9 @@ public static class DevServer
     private static IHubContext<LiveReloadHub>? _hubContext;
     private static readonly SemaphoreSlim RebuildLock = new(1, 1);
 
-    public static async Task RunAsync(string dataDir, string templatesDir, string staticDir, string distDir, int port)
+    public static async Task RunAsync(string dataDir, string templatesDir, string distDir, int port)
     {
-        await RebuildAsync(dataDir, templatesDir, staticDir, distDir);
+        await RebuildAsync(dataDir, templatesDir, distDir);
 
         using var watcher = new FileSystemWatcher();
         var projectRoot = Path.GetDirectoryName(dataDir)!;
@@ -30,7 +32,7 @@ public static class DevServer
 
             try
             {
-                await RebuildAsync(dataDir, templatesDir, staticDir, distDir);
+                await RebuildAsync(dataDir, templatesDir, distDir);
                 if (_hubContext is not null)
                 {
                     await _hubContext.Clients.All.SendAsync("Reload");
@@ -92,11 +94,11 @@ public static class DevServer
         debounce.Start();
     }
 
-    private static async Task RebuildAsync(string dataDir, string templatesDir, string staticDir, string distDir)
+    private static async Task RebuildAsync(string dataDir, string templatesDir, string distDir)
     {
         try
         {
-            await SiteGenerator.GenerateAsync(dataDir, templatesDir, staticDir, distDir);
+            await SiteGenerator.GenerateAsync(dataDir, templatesDir, distDir);
             await InjectLiveReloadAsync(distDir);
         }
         catch (Exception ex)
@@ -107,25 +109,35 @@ public static class DevServer
 
     private static async Task InjectLiveReloadAsync(string distDir)
     {
-        const string script = """
-            <script src="https://unpkg.com/@microsoft/signalr@latest/dist/browser/signalr.min.js"></script>
-            <script>
-            (function(){
-              var conn = new signalR.HubConnectionBuilder().withUrl("/__livereload").withAutomaticReconnect().build();
-              conn.on("Reload", function(){ location.reload(); });
-              conn.start();
-            })();
-            </script>
-            """;
+        var parser = new HtmlParser();
 
         foreach (var file in Directory.GetFiles(distDir, "*.html", SearchOption.AllDirectories))
         {
             var html = await File.ReadAllTextAsync(file);
-            var injected = html.Replace("</body>", script + "</body>", StringComparison.OrdinalIgnoreCase);
-            if (injected != html)
+            var document = await parser.ParseDocumentAsync(html);
+            var body = document.Body;
+            if (body == null)
             {
-                await File.WriteAllTextAsync(file, injected);
+                continue;
             }
+
+            var signalrScript = document.CreateElement("script");
+            signalrScript.SetAttribute("src", "https://unpkg.com/@microsoft/signalr@latest/dist/browser/signalr.min.js");
+            body.AppendChild(signalrScript);
+
+            var reloadScript = document.CreateElement("script");
+            reloadScript.TextContent = """
+                (function(){
+                  var conn = new signalR.HubConnectionBuilder().withUrl("/__livereload").withAutomaticReconnect().build();
+                  conn.on("Reload", function(){ location.reload(); });
+                  conn.start();
+                })();
+                """;
+            body.AppendChild(reloadScript);
+
+            await using var writer = new StringWriter();
+            document.ToHtml(writer, new PrettyMarkupFormatter());
+            await File.WriteAllTextAsync(file, writer.ToString());
         }
     }
 }

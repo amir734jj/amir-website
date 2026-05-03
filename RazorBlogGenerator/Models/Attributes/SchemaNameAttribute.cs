@@ -1,6 +1,6 @@
 using CaseExtensions;
 
-namespace RazorBlogGenerator.Models;
+namespace RazorBlogGenerator.Models.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class SchemaNameAttribute(string? name = null) : Attribute

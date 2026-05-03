@@ -1,5 +1,5 @@
 # $schema: ../Schemas/site-config.schema.json
-site_name: "Amir Hesamian"
+site_name: "Journal"
 footer_text: "Amir Hesamian"
 
 navbar:
@@ -7,4 +7,3 @@ navbar:
     href: "/"
   - label: "CV"
     href: "/cv/"
-

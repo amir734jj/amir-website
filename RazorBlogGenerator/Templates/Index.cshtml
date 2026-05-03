@@ -1,0 +1,35 @@
+@inherits RazorLight.TemplatePage<RenderContext>
+@using RazorBlogGenerator.Models
+@model RenderContext
+@{
+    var children = Model.GetAllDescendants();
+}
+
+<h2 class="mb-4">@Model.Page.Title</h2>
+
+@if (children.Count == 0)
+{
+  <p class="text-muted">No content yet.</p>
+}
+else
+{
+  @foreach (var child in children)
+  {
+    <div class="card mb-3">
+      <div class="card-body">
+        <p class="text-muted small mb-1">@child.PublishedOn</p>
+        <h2 class="h5"><a href="@child.Route" class="text-decoration-none">@child.Title</a></h2>
+        <p class="card-text text-secondary">@child.Excerpt</p>
+        @if (child.Tags.Count > 0)
+        {
+          <div class="mt-2">
+            @foreach (var tag in child.Tags)
+            {
+              <span class="badge bg-secondary me-1">@tag</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+}

@@ -111,28 +111,13 @@
         "template": {
           "type": "string"
         },
-        "slug": {
-          "type": "string"
-        },
         "title": {
           "type": "string"
         },
-        "content_type": {
-          "$ref": "#/definitions/ContentType"
+        "route": {
+          "type": "string"
         }
       }
-    },
-    "ContentType": {
-      "type": "string",
-      "description": "",
-      "x-enumNames": [
-        "Yaml",
-        "Markdown"
-      ],
-      "enum": [
-        "yaml",
-        "markdown"
-      ]
     }
   },
   "allOf": [

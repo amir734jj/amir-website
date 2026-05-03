@@ -1,13 +1,11 @@
-# $schema: ../Schemas/resume-model.schema.json
+# $schema: ../../Schemas/resume-model.schema.json
 model: ResumeModel
 template: Resume.cshtml
-slug: cv/
 title: "Amir Hesamian - CV"
-content_type: yaml
----
+
 name: "Seyedamirhossein Hesamian (Amir)"
 tagline: "Software Engineer · Compilers · Distributed Systems"
-profile_image: "/assets/images/5R3A9059.JPG"
+profile_image: "profile.jpg"
 
 contact:
   address: "Whitefish Bay, WI"

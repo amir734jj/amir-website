@@ -1,4 +1,4 @@
-@inherits RazorLight.TemplatePage<TModel>
+@inherits RazorLight.TemplatePage<RenderContext>
 @using RazorBlogGenerator.Models
 @model RenderContext
 @{
@@ -6,10 +6,18 @@
 }
 
 <article>
-  <a href="/" class="text-decoration-none mb-3 d-inline-block">&larr; Back to blog</a>
   <p class="text-muted small">@post.PublishedOn</p>
-  <h1 class="display-6 fw-bold">@post.Title</h1>
+  <h2 class="display-6 fw-bold">@post.Title</h2>
   <p class="lead text-secondary">@post.Excerpt</p>
+  @if (post.Tags.Count > 0)
+  {
+    <div class="mb-3">
+      @foreach (var tag in post.Tags)
+      {
+        <span class="badge bg-secondary me-1">@tag</span>
+      }
+    </div>
+  }
   <hr />
   <div>@Raw(post.RenderedHtml)</div>
 </article>

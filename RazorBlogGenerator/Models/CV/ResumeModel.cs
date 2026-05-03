@@ -1,7 +1,6 @@
 using RazorBlogGenerator.Models.Attributes;
-using RazorBlogGenerator.Models.CV;
 
-namespace RazorBlogGenerator.Models;
+namespace RazorBlogGenerator.Models.CV;
 
 [SchemaName]
 public class ResumeModel : ContentPage

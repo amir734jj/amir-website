@@ -1,5 +1,7 @@
 ﻿using CommandLine;
 
+namespace RazorBlogGenerator.Commands;
+
 [Verb("build", HelpText = "Generate the static site.")]
 public class BuildOptions
 {

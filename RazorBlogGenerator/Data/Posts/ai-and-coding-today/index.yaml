@@ -1,8 +1,9 @@
-# $schema: ../../Schemas/post-model.schema.json
+# $schema: ../../../Schemas/post-model.schema.json
 model: PostModel
 template: Post.cshtml
-slug: posts/ai-coding-today/
 title: "My experiences with AI-assisted coding tools in 2026"
 published_on: "2026-05-02"
 excerpt: "AI coding assistants are useful if you know what you are doing, otherwise they hallucinate"
-content_type: markdown
+tags:
+  - ai
+  - tooling

@@ -1,35 +1,36 @@
-@inherits RazorLight.TemplatePage<TModel>
+@inherits RazorLight.TemplatePage<RenderContext>
 @using RazorBlogGenerator.Models
+@using RazorBlogGenerator.Models.CV
 @model RenderContext
 @{
-    var r = (ResumeModel)Model.Page;
+    var cv = (ResumeModel)Model.Page;
 }
 
 <div class="bg-light border rounded-3 p-4 mb-4">
   <div class="d-flex flex-wrap align-items-center gap-4">
-    @if (!string.IsNullOrWhiteSpace(r.ProfileImage))
+    @if (!string.IsNullOrWhiteSpace(cv.ProfileImage))
     {
-      <img src="@r.ProfileImage" alt="@r.Name" class="rounded-circle" width="120" height="120" />
+      <img src="@cv.ProfileImage" alt="@cv.Name" class="rounded-circle" width="120" height="120" style="object-fit: cover;" />
     }
     <div>
       <p class="text-uppercase text-muted small fw-semibold mb-1">Software Engineer</p>
-      <h1 class="display-5 fw-bold">@r.Name</h1>
-      <p class="lead text-secondary">@r.Tagline</p>
+      <h1 class="display-5 fw-bold">@cv.Name</h1>
+      <p class="lead text-secondary">@cv.Tagline</p>
     </div>
   </div>
   <div class="d-flex flex-wrap gap-3 mt-3">
-    <span><i class="bi bi-geo-alt"></i> @r.Contact.Address</span>
-    <a href="mailto:@r.Contact.Email"><i class="bi bi-envelope"></i> @r.Contact.Email</a>
-    <a href="@r.Contact.GithubUrl" target="_blank" rel="noopener"><i class="bi bi-github"></i> @r.Contact.GithubLabel</a>
-    <a href="@r.Contact.LinkedinUrl" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i> @r.Contact.LinkedinLabel</a>
-    <a href="tel:@r.Contact.Phone"><i class="bi bi-telephone"></i> @r.Contact.Phone</a>
+    <span><i class="bi bi-geo-alt"></i> @cv.Contact.Address</span>
+    <a href="mailto:@cv.Contact.Email"><i class="bi bi-envelope"></i> @cv.Contact.Email</a>
+    <a href="@cv.Contact.GithubUrl" target="_blank" rel="noopener"><i class="bi bi-github"></i> @cv.Contact.GithubLabel</a>
+    <a href="@cv.Contact.LinkedinUrl" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i> @cv.Contact.LinkedinLabel</a>
+    <a href="tel:@cv.Contact.Phone"><i class="bi bi-telephone"></i> @cv.Contact.Phone</a>
   </div>
 </div>
 
 <div class="card mb-4">
   <div class="card-body">
     <h2 class="h6 text-uppercase text-primary fw-bold">Education</h2>
-    @foreach (var item in r.Education)
+    @foreach (var item in cv.Education)
     {
       <div class="mb-3">
         <div class="d-flex justify-content-between flex-wrap">
@@ -51,7 +52,7 @@
 <div class="card mb-4">
   <div class="card-body">
     <h2 class="h6 text-uppercase text-primary fw-bold">Technical Skills</h2>
-    @foreach (var s in r.Skills)
+    @foreach (var s in cv.Skills)
     {
       <p class="mb-1"><strong>@s.Category:</strong> @s.Value</p>
     }
@@ -61,7 +62,7 @@
 <div class="card mb-4" id="experience">
   <div class="card-body">
     <h2 class="h6 text-uppercase text-primary fw-bold">Experience</h2>
-    @foreach (var item in r.Experience)
+    @foreach (var item in cv.Experience)
     {
       <div class="mb-4 border-bottom pb-3">
         <div class="d-flex justify-content-between flex-wrap">
@@ -86,7 +87,7 @@
     <div class="card h-100">
       <div class="card-body">
         <h2 class="h6 text-uppercase text-primary fw-bold">Honors &amp; Awards</h2>
-        <ul class="mb-0">@foreach (var h in r.Honors) { <li>@h</li> }</ul>
+        <ul class="mb-0">@foreach (var h in cv.Honors) { <li>@h</li> }</ul>
       </div>
     </div>
   </div>
@@ -94,9 +95,9 @@
     <div class="card h-100">
       <div class="card-body">
         <h2 class="h6 text-uppercase text-primary fw-bold">Additional Activities</h2>
-        <ul>@foreach (var a in r.Activities) { <li>@a</li> }</ul>
+        <ul>@foreach (var a in cv.Activities) { <li>@a</li> }</ul>
         <h2 class="h6 text-uppercase text-primary fw-bold mt-3">Work Authorization</h2>
-        <p class="mb-0">@r.WorkAuthorization</p>
+        <p class="mb-0">@cv.WorkAuthorization</p>
       </div>
     </div>
   </div>

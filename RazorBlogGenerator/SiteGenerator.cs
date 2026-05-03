@@ -1,3 +1,6 @@
+using System.Collections.Concurrent;
+using AngleSharp.Html;
+using AngleSharp.Html.Parser;
 using Markdig;
 using Markdig.Renderers;
 using Markdig.Renderers.Html;
@@ -17,16 +20,10 @@ public static class SiteGenerator
 
     private static Dictionary<string, Type> BuildModelRegistry()
     {
-        var services = new ServiceCollection();
-        services.Scan(scan => scan
-            .FromAssemblyOf<ContentPage>()
-            .AddClasses(c => c.AssignableTo<ContentPage>())
-            .AsSelf()
-            .WithTransientLifetime());
-
-        return services
-            .Where(sd => sd.ServiceType != typeof(ContentPage) && typeof(ContentPage).IsAssignableFrom(sd.ServiceType))
-            .ToDictionary(sd => sd.ServiceType.Name, sd => sd.ServiceType);
+        return typeof(ContentPage).Assembly
+            .GetTypes()
+            .Where(t => t.IsSubclassOf(typeof(ContentPage)) && !t.IsAbstract)
+            .ToDictionary(t => t.Name, t => t);
     }
 
     private static readonly IDeserializer Deserializer = new DeserializerBuilder()
@@ -34,21 +31,32 @@ public static class SiteGenerator
         .IgnoreUnmatchedProperties()
         .Build();
 
+    private static readonly string[] YamlExtensions = [".yaml", ".yml"];
+    private static readonly string[] ContentExtensions = [".md", ".markdown"];
+    private static readonly string[] SiteConfigNames = ["site.yaml", "site.yml"];
+
+    private static readonly MarkdownPipeline MarkdownPipeline = new MarkdownPipelineBuilder()
+        .UseAdvancedExtensions()
+        .Use(new ImgFluidExtension())
+        .Build();
+
+    private static readonly ConcurrentDictionary<string, Lazy<RazorLightEngine>> EngineCache = new();
+
+    private static RazorLightEngine GetEngine(string templatesDir)
+    {
+        return EngineCache.GetOrAdd(templatesDir, dir => new Lazy<RazorLightEngine>(() =>
+            new RazorLightEngineBuilder()
+                .UseFileSystemProject(dir)
+                .UseMemoryCachingProvider()
+                .Build())).Value;
+    }
+
     public static async Task GenerateAsync(
         string dataDir,
         string templatesDir,
-        string staticDir,
         string distDir)
     {
-        var engine = new RazorLightEngineBuilder()
-            .UseFileSystemProject(templatesDir)
-            .UseMemoryCachingProvider()
-            .Build();
-
-        var markdownPipeline = new MarkdownPipelineBuilder()
-            .UseAdvancedExtensions()
-            .Use(new ImgFluidExtension())
-            .Build();
+        var engine = GetEngine(templatesDir);
 
         if (Directory.Exists(distDir))
         {
@@ -57,7 +65,7 @@ public static class SiteGenerator
 
         Directory.CreateDirectory(distDir);
 
-        var siteConfigPath = new[] { "site.yaml", "site.yml" }
+        var siteConfigPath = SiteConfigNames
             .Select(n => Path.Combine(dataDir, n))
             .FirstOrDefault(File.Exists);
         var siteConfig = siteConfigPath is not null
@@ -66,27 +74,26 @@ public static class SiteGenerator
 
         var pages = new List<ContentPage>();
 
-        foreach (var file in Directory.GetFiles(dataDir, "*.*", SearchOption.AllDirectories)
-            .Where(f => f.EndsWith(".yaml", StringComparison.OrdinalIgnoreCase) ||
-                        f.EndsWith(".yml", StringComparison.OrdinalIgnoreCase)))
+        foreach (var yamlFile in Directory.GetFiles(dataDir, "*.*", SearchOption.AllDirectories)
+            .Where(f => YamlExtensions.Any(ext => f.EndsWith(ext, StringComparison.OrdinalIgnoreCase))))
         {
-            if (Path.GetFileName(file).Equals("site.yaml", StringComparison.OrdinalIgnoreCase) ||
-                Path.GetFileName(file).Equals("site.yml", StringComparison.OrdinalIgnoreCase))
+            var fileName = Path.GetFileName(yamlFile);
+            if (SiteConfigNames.Any(n => fileName.Equals(n, StringComparison.OrdinalIgnoreCase)))
             {
                 continue;
             }
 
-            var page = LoadPage(file, markdownPipeline);
+            var page = LoadPage(yamlFile, dataDir, MarkdownPipeline);
             if (page != null)
             {
                 pages.Add(page);
             }
         }
 
-        foreach (var page in pages)
+        // Render all pages, then write in parallel
+        var renderTasks = pages.Select(async page =>
         {
             var context = new RenderContext { Page = page, AllPages = pages, Site = siteConfig };
-
             var bodyHtml = await engine.CompileRenderAsync(page.Template, context);
 
             var layoutContext = new RenderContext
@@ -98,31 +105,43 @@ public static class SiteGenerator
             };
             var fullHtml = await engine.CompileRenderAsync("Layout.cshtml", layoutContext);
 
-            var outputPath = page.Slug.Trim('/') is "" or "/"
+            var outputPath = page.Route.Trim('/') is ""
                 ? Path.Combine(distDir, "index.html")
-                : Path.Combine(distDir, page.Slug.Trim('/'), "index.html");
+                : Path.Combine(distDir, page.Route.Trim('/'), "index.html");
 
-            var dir = Path.GetDirectoryName(outputPath)!;
-            Directory.CreateDirectory(dir);
-            await File.WriteAllTextAsync(outputPath, fullHtml);
-        }
+            return (outputPath, fullHtml);
+        });
 
-        if (Directory.Exists(staticDir))
+        var rendered = await Task.WhenAll(renderTasks);
+
+        var writeTasks = rendered.Select(async r =>
         {
-            CopyDirectory(staticDir, Path.Combine(distDir, "assets"));
-        }
+            var dir = Path.GetDirectoryName(r.outputPath)!;
+            Directory.CreateDirectory(dir);
+            await File.WriteAllTextAsync(r.outputPath, await FormatHtmlAsync(r.fullHtml));
+        });
+
+        await Task.WhenAll(writeTasks);
+
+        CopyColocatedAssets(dataDir, distDir);
 
         Log.Information("Generated {Count} pages to {DistDir}", pages.Count, distDir);
     }
 
-    private static ContentPage? LoadPage(string filePath, MarkdownPipeline markdownPipeline)
+    private static async Task<string> FormatHtmlAsync(string html)
     {
-        var raw = File.ReadAllText(filePath);
-        var parts = raw.Split("---", 2);
-        var metaYaml = parts[0].Trim();
-        var bodyRaw = parts.Length > 1 ? parts[1].Trim() : null;
+        var parser = new HtmlParser();
+        var document = await parser.ParseDocumentAsync(html);
+        await using var writer = new StringWriter();
+        document.ToHtml(writer, new PrettyMarkupFormatter());
+        return writer.ToString();
+    }
 
-        var meta = Deserializer.Deserialize<ContentPage>(metaYaml);
+    private static ContentPage? LoadPage(string filePath, string dataDir, MarkdownPipeline markdownPipeline)
+    {
+        var yaml = File.ReadAllText(filePath);
+
+        var meta = Deserializer.Deserialize<ContentPage>(yaml);
 
         if (string.IsNullOrWhiteSpace(meta.Model) || string.IsNullOrWhiteSpace(meta.Template))
         {
@@ -136,55 +155,48 @@ public static class SiteGenerator
             return null;
         }
 
-        ContentPage page;
+        var page = (ContentPage)Deserializer.Deserialize(yaml, modelType)!;
+        page.Route = DeriveRoute(filePath, dataDir);
 
-        switch (meta.ContentType)
+        if (page is PostModel post)
         {
-            case ContentType.Markdown:
+            var contentDir = Path.GetDirectoryName(filePath)!;
+            var mdFile = ContentExtensions
+                .Select(ext => Path.Combine(contentDir, "content" + ext))
+                .FirstOrDefault(File.Exists)
+                ?? ContentExtensions
+                    .Select(ext => Path.ChangeExtension(filePath, ext))
+                    .FirstOrDefault(File.Exists);
+
+            if (mdFile != null)
             {
-                page = (ContentPage)Deserializer.Deserialize(metaYaml, modelType)!;
-
-                if (page is PostModel post)
-                {
-                    // Look for companion .md file, fall back to body after ---
-                    var mdPath = Path.ChangeExtension(filePath, ".md");
-                    var markdown = File.Exists(mdPath)
-                        ? File.ReadAllText(mdPath)
-                        : bodyRaw;
-
-                    if (!string.IsNullOrWhiteSpace(markdown))
-                    {
-                        post.RenderedHtml = Markdown.ToHtml(markdown, markdownPipeline);
-                    }
-                }
-
-                break;
+                var markdown = File.ReadAllText(mdFile);
+                post.RenderedHtml = Markdown.ToHtml(markdown, markdownPipeline);
             }
-            case ContentType.Yaml:
-            {
-                var yamlToDeserialize = string.IsNullOrWhiteSpace(bodyRaw) ? metaYaml : bodyRaw;
-                page = (ContentPage)Deserializer.Deserialize(yamlToDeserialize, modelType)!;
-                page.Model = meta.Model;
-                page.Template = meta.Template;
-                page.Slug = meta.Slug;
-                page.Title = meta.Title;
-                page.ContentType = meta.ContentType;
-                break;
-            }
-            default:
-                throw new ArgumentException("Unsupported meta type", nameof(meta));
         }
 
         return page;
     }
 
-    private static void CopyDirectory(string source, string destination)
+    private static string DeriveRoute(string filePath, string dataDir)
     {
-        Directory.CreateDirectory(destination);
-        foreach (var file in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
+        var dir = Path.GetDirectoryName(filePath)!;
+        var relative = Path.GetRelativePath(dataDir, dir).Replace('\\', '/');
+        return relative == "." ? "/" : "/" + relative + "/";
+    }
+
+    private static void CopyColocatedAssets(string dataDir, string distDir)
+    {
+        foreach (var file in Directory.GetFiles(dataDir, "*", SearchOption.AllDirectories))
         {
-            var rel = Path.GetRelativePath(source, file);
-            var dest = Path.Combine(destination, rel);
+            var ext = Path.GetExtension(file).ToLowerInvariant();
+            if (YamlExtensions.Contains(ext) || ContentExtensions.Contains(ext))
+            {
+                continue;
+            }
+
+            var relative = Path.GetRelativePath(dataDir, file).Replace('\\', '/');
+            var dest = Path.Combine(distDir, relative);
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
             File.Copy(file, dest, overwrite: true);
         }

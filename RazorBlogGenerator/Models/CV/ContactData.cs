@@ -1,4 +1,4 @@
-﻿namespace RazorBlogGenerator.Models;
+﻿namespace RazorBlogGenerator.Models.CV;
 
 public class ContactData
 {

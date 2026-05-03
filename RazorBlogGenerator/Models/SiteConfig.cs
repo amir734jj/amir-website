@@ -1,3 +1,5 @@
+using RazorBlogGenerator.Models.Attributes;
+
 namespace RazorBlogGenerator.Models;
 
 [SchemaName]

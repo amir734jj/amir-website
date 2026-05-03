@@ -15,7 +15,6 @@ await Parser.Default.ParseArguments<BuildOptions, SchemaOptions, ValidateOptions
             await SiteGenerator.GenerateAsync(
                 dataDir: Path.Combine(root, "Data"),
                 templatesDir: Path.Combine(root, "Templates"),
-                staticDir: Path.Combine(root, "Static"),
                 distDir: opts.Output ?? Path.Combine(root, "dist"));
         },
         async (SchemaOptions opts) =>
@@ -39,7 +38,6 @@ await Parser.Default.ParseArguments<BuildOptions, SchemaOptions, ValidateOptions
             await DevServer.RunAsync(
                 Path.Combine(root, "Data"),
                 Path.Combine(root, "Templates"),
-                Path.Combine(root, "Static"),
                 distDir,
                 opts.Port);
         },

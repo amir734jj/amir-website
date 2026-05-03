@@ -1,6 +1,6 @@
 using NJsonSchema;
 using Newtonsoft.Json;
-using RazorBlogGenerator.Models;
+using RazorBlogGenerator.Models.Attributes;
 using Serilog;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -35,19 +35,17 @@ public static class YamlValidator
             .Where(f => f.EndsWith(".yaml", StringComparison.OrdinalIgnoreCase) ||
                         f.EndsWith(".yml", StringComparison.OrdinalIgnoreCase)))
         {
-            if (Path.GetFileName(file).Equals("site.yaml", StringComparison.OrdinalIgnoreCase) ||
-                Path.GetFileName(file).Equals("site.yml", StringComparison.OrdinalIgnoreCase))
+            var fileName = Path.GetFileName(file);
+            if (fileName.Equals("site.yaml", StringComparison.OrdinalIgnoreCase) ||
+                fileName.Equals("site.yml", StringComparison.OrdinalIgnoreCase))
             {
                 errorCount += ValidateFile(file, schemaMap.GetValueOrDefault("site-config"));
                 continue;
             }
 
-            var raw = await File.ReadAllTextAsync(file);
-            var parts = raw.Split("---", 2, StringSplitOptions.None);
-            var metaYaml = parts[0].Trim();
+            var yaml = await File.ReadAllTextAsync(file);
 
-            var meta = YamlDeserializer.Deserialize<Dictionary<string, object>>(metaYaml);
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+            var meta = YamlDeserializer.Deserialize<Dictionary<string, object>>(yaml);
             if (meta is null || !meta.TryGetValue("model", out var modelObj))
             {
                 Log.Warning("{File}: missing 'model' field, skipping", file);
@@ -65,28 +63,12 @@ public static class YamlValidator
 
             if (!schemaMap.TryGetValue(schemaName, out var schema))
             {
-                Log.Warning("{File}: no schema found for model '{Model}'", file, modelName);
+                Log.Warning("{File}: no schema found for '{SchemaName}'", file, schemaName);
                 errorCount++;
                 continue;
             }
 
-            // For markdown content types, validate only the frontmatter
-            // For yaml content types with a body, validate the body; otherwise validate frontmatter
-            var contentType = meta.TryGetValue("content_type", out var ct) ? ct.ToString() : "yaml";
-            string yamlToValidate;
-
-            if (contentType == "markdown")
-            {
-                yamlToValidate = metaYaml;
-            }
-            else
-            {
-                yamlToValidate = parts.Length > 1 && !string.IsNullOrWhiteSpace(parts[1])
-                    ? parts[1].Trim()
-                    : metaYaml;
-            }
-
-            errorCount += ValidateYamlAgainstSchema(file, yamlToValidate, schema);
+            errorCount += ValidateYamlAgainstSchema(file, yaml, schema);
         }
 
         if (errorCount == 0)

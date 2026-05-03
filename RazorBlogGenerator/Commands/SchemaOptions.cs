@@ -1,5 +1,7 @@
 ﻿using CommandLine;
 
+namespace RazorBlogGenerator.Commands;
+
 [Verb("schema", HelpText = "Generate JSON schemas from C# models.")]
 public class SchemaOptions
 {
