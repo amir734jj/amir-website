@@ -7,7 +7,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
 
-await Parser.Default.ParseArguments<BuildOptions, SchemaOptions, ValidateOptions, WatchOptions>(args)
+await Parser.Default.ParseArguments<BuildOptions, SchemaOptions, ValidateOptions, WatchOptions, ServeOptions>(args)
     .MapResult(
         async (BuildOptions opts) =>
         {
@@ -40,6 +40,15 @@ await Parser.Default.ParseArguments<BuildOptions, SchemaOptions, ValidateOptions
                 Path.Combine(root, "Templates"),
                 distDir,
                 opts.Port);
+        },
+        async (ServeOptions opts) =>
+        {
+            var root = FindProjectRoot();
+            var distDir = opts.Output ?? Path.Combine(root, "dist");
+            var port = int.TryParse(Environment.GetEnvironmentVariable("PORT"), out var envPort)
+                ? envPort
+                : opts.Port;
+            await StaticServer.RunAsync(distDir, port);
         },
         errors =>
         {

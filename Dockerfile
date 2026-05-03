@@ -12,7 +12,9 @@ COPY --from=build /app .
 RUN dotnet RazorBlogGenerator.dll validate
 RUN dotnet RazorBlogGenerator.dll build -o /site
 
-FROM nginx:alpine
-COPY --from=generate /site /usr/share/nginx/html
-COPY nginx.conf.template /etc/nginx/templates/default.conf.template
-CMD ["nginx", "-g", "daemon off;"]
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-preview
+WORKDIR /app
+COPY --from=generate /app .
+COPY --from=generate /site /app/dist
+ENV PORT=80
+ENTRYPOINT ["dotnet", "RazorBlogGenerator.dll", "serve"]
