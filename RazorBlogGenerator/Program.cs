@@ -43,7 +43,16 @@ await Parser.Default.ParseArguments<BuildOptions, SchemaOptions, ValidateOptions
                 distDir,
                 opts.Port);
         },
-        _ => Task.FromResult(1));
+        errors =>
+        {
+            var errs = errors.ToList();
+            if (!errs.Any(e => e is HelpRequestedError or VersionRequestedError))
+            {
+                Log.Error("Unknown or invalid command. Run with --help for usage.");
+                Environment.ExitCode = 1;
+            }
+            return Task.FromResult(1);
+        });
 return;
 
 static string FindProjectRoot()

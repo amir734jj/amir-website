@@ -4,5 +4,5 @@ template: Post.cshtml
 slug: posts/better-oncall-tooling/
 title: "Designing Better On-call Tooling"
 published_on: "2026-04-20"
-excerpt: "Small reliability affordances that make incident response faster."
+excerpt: "What I learned from being on-call at Microsoft and how can I do better"
 content_type: markdown

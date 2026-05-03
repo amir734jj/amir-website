@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PreserveCompilationContext>true</PreserveCompilationContext>
+    <EnableDefaultRazorItems>false</EnableDefaultRazorItems>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,10 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Templates\**\*" CopyToOutputDirectory="PreserveNewest" />
-    <Content Update="Data\**\*" CopyToOutputDirectory="PreserveNewest" />
-    <Content Update="Static\**\*" CopyToOutputDirectory="PreserveNewest" />
-    <Content Update="Schemas\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Data\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Static\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Schemas\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Templates\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

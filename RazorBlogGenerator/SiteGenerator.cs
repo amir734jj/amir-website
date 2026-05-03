@@ -1,4 +1,8 @@
 using Markdig;
+using Markdig.Renderers;
+using Markdig.Renderers.Html;
+using Markdig.Renderers.Html.Inlines;
+using Markdig.Syntax.Inlines;
 using RazorBlogGenerator.Models;
 using RazorLight;
 using Serilog;
@@ -43,6 +47,7 @@ public static class SiteGenerator
 
         var markdownPipeline = new MarkdownPipelineBuilder()
             .UseAdvancedExtensions()
+            .Use(new ImgFluidExtension())
             .Build();
 
         if (Directory.Exists(distDir))
@@ -52,16 +57,21 @@ public static class SiteGenerator
 
         Directory.CreateDirectory(distDir);
 
-        var siteConfigPath = Path.Combine(dataDir, "site.yaml");
-        var siteConfig = File.Exists(siteConfigPath)
+        var siteConfigPath = new[] { "site.yaml", "site.yml" }
+            .Select(n => Path.Combine(dataDir, n))
+            .FirstOrDefault(File.Exists);
+        var siteConfig = siteConfigPath is not null
             ? Deserializer.Deserialize<SiteConfig>(await File.ReadAllTextAsync(siteConfigPath))
             : new SiteConfig();
 
         var pages = new List<ContentPage>();
 
-        foreach (var file in Directory.GetFiles(dataDir, "*.yaml", SearchOption.AllDirectories))
+        foreach (var file in Directory.GetFiles(dataDir, "*.*", SearchOption.AllDirectories)
+            .Where(f => f.EndsWith(".yaml", StringComparison.OrdinalIgnoreCase) ||
+                        f.EndsWith(".yml", StringComparison.OrdinalIgnoreCase)))
         {
-            if (Path.GetFileName(file).Equals("site.yaml", StringComparison.OrdinalIgnoreCase))
+            if (Path.GetFileName(file).Equals("site.yaml", StringComparison.OrdinalIgnoreCase) ||
+                Path.GetFileName(file).Equals("site.yml", StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
@@ -178,5 +188,37 @@ public static class SiteGenerator
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
             File.Copy(file, dest, overwrite: true);
         }
+    }
+}
+
+file sealed class ImgFluidExtension : IMarkdownExtension
+{
+    public void Setup(MarkdownPipelineBuilder pipeline) { }
+
+    public void Setup(MarkdownPipeline pipeline, IMarkdownRenderer renderer)
+    {
+        if (renderer is HtmlRenderer htmlRenderer)
+        {
+            var existing = htmlRenderer.ObjectRenderers.FindExact<LinkInlineRenderer>();
+            if (existing != null)
+            {
+                htmlRenderer.ObjectRenderers.Remove(existing);
+            }
+
+            htmlRenderer.ObjectRenderers.AddIfNotAlready(new ImgFluidLinkInlineRenderer());
+        }
+    }
+}
+
+file sealed class ImgFluidLinkInlineRenderer : LinkInlineRenderer
+{
+    protected override void Write(HtmlRenderer renderer, LinkInline link)
+    {
+        if (link.IsImage)
+        {
+            link.GetAttributes().AddClass("img-fluid");
+        }
+
+        base.Write(renderer, link);
     }
 }

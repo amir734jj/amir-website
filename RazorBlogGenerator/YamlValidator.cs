@@ -31,9 +31,12 @@ public static class YamlValidator
 
         var errorCount = 0;
 
-        foreach (var file in Directory.GetFiles(dataDir, "*.yaml", SearchOption.AllDirectories))
+        foreach (var file in Directory.GetFiles(dataDir, "*.*", SearchOption.AllDirectories)
+            .Where(f => f.EndsWith(".yaml", StringComparison.OrdinalIgnoreCase) ||
+                        f.EndsWith(".yml", StringComparison.OrdinalIgnoreCase)))
         {
-            if (Path.GetFileName(file).Equals("site.yaml", StringComparison.OrdinalIgnoreCase))
+            if (Path.GetFileName(file).Equals("site.yaml", StringComparison.OrdinalIgnoreCase) ||
+                Path.GetFileName(file).Equals("site.yml", StringComparison.OrdinalIgnoreCase))
             {
                 errorCount += ValidateFile(file, schemaMap.GetValueOrDefault("site-config"));
                 continue;

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
 
@@ -5,6 +6,9 @@ namespace RazorBlogGenerator;
 
 public static class DevServer
 {
+    private static IHubContext<LiveReloadHub>? _hubContext;
+    private static readonly SemaphoreSlim RebuildLock = new(1, 1);
+
     public static async Task RunAsync(string dataDir, string templatesDir, string staticDir, string distDir, int port)
     {
         await RebuildAsync(dataDir, templatesDir, staticDir, distDir);
@@ -19,7 +23,23 @@ public static class DevServer
         var debounceTimer = new System.Timers.Timer(300) { AutoReset = false };
         debounceTimer.Elapsed += async (_, _) =>
         {
-            await RebuildAsync(dataDir, templatesDir, staticDir, distDir);
+            if (!await RebuildLock.WaitAsync(0))
+            {
+                return;
+            }
+
+            try
+            {
+                await RebuildAsync(dataDir, templatesDir, staticDir, distDir);
+                if (_hubContext is not null)
+                {
+                    await _hubContext.Clients.All.SendAsync("Reload");
+                }
+            }
+            finally
+            {
+                RebuildLock.Release();
+            }
         };
 
         watcher.Changed += (_, e) => OnChange(e, debounceTimer, distDir);
@@ -39,7 +59,10 @@ public static class DevServer
             WebRootPath = fullDistPath
         });
         builder.Logging.ClearProviders();
+        builder.Services.AddSignalR();
         var app = builder.Build();
+
+        _hubContext = app.Services.GetRequiredService<IHubContext<LiveReloadHub>>();
 
         app.UseDefaultFiles(new DefaultFilesOptions { FileProvider = fileProvider });
         app.UseStaticFiles(new StaticFileOptions
@@ -47,6 +70,7 @@ public static class DevServer
             FileProvider = fileProvider,
             ServeUnknownFileTypes = true
         });
+        app.MapHub<LiveReloadHub>("/__livereload");
 
         await app.RunAsync($"http://localhost:{port}");
     }
@@ -73,10 +97,38 @@ public static class DevServer
         try
         {
             await SiteGenerator.GenerateAsync(dataDir, templatesDir, staticDir, distDir);
+            await InjectLiveReloadAsync(distDir);
         }
         catch (Exception ex)
         {
             Log.Error(ex, "Rebuild failed");
         }
     }
+
+    private static async Task InjectLiveReloadAsync(string distDir)
+    {
+        const string script = """
+            <script src="https://unpkg.com/@microsoft/signalr@latest/dist/browser/signalr.min.js"></script>
+            <script>
+            (function(){
+              var conn = new signalR.HubConnectionBuilder().withUrl("/__livereload").withAutomaticReconnect().build();
+              conn.on("Reload", function(){ location.reload(); });
+              conn.start();
+            })();
+            </script>
+            """;
+
+        foreach (var file in Directory.GetFiles(distDir, "*.html", SearchOption.AllDirectories))
+        {
+            var html = await File.ReadAllTextAsync(file);
+            var injected = html.Replace("</body>", script + "</body>", StringComparison.OrdinalIgnoreCase);
+            if (injected != html)
+            {
+                await File.WriteAllTextAsync(file, injected);
+            }
+        }
+    }
 }
+
+ public class LiveReloadHub : Hub;
+
