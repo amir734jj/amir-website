@@ -1,0 +1,9 @@
+# $schema: ../../../Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "SMS Terms and Conditions"
+published_on: "2026-05-04"
+hidden: false
+excerpt: "Terms and conditions governing SMS notifications."
+tags:
+  - sms
