@@ -1,0 +1,8 @@
+# $schema: ../../../Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "SMS Privacy Policy"
+published_on: "2026-05-04"
+excerpt: "Privacy policy governing SMS communications."
+tags:
+  - sms

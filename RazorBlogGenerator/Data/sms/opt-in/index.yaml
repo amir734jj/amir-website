@@ -1,0 +1,8 @@
+# $schema: ../../../Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "SMS Opt-In"
+published_on: "2026-05-04"
+excerpt: "How to opt in to receive SMS messages and what to expect."
+tags:
+  - sms

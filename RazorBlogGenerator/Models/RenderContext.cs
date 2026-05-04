@@ -14,9 +14,18 @@ public class RenderContext
     public IReadOnlyList<PostModel> GetAllDescendants()
     {
         var currentRoute = Page.Route.TrimEnd('/') + "/";
+        var hiddenIndexRoutes = AllPages
+            .OfType<IndexModel>()
+            .Where(p => p.Hidden && p.Route != Page.Route)
+            .Select(p => p.Route.TrimEnd('/') + "/")
+            .ToHashSet();
+
         return AllPages
             .OfType<PostModel>()
-            .Where(p => !p.Hidden && p.Route != Page.Route && p.Route.StartsWith(currentRoute))
+            .Where(p => !p.Hidden
+                && p.Route != Page.Route
+                && p.Route.StartsWith(currentRoute)
+                && !hiddenIndexRoutes.Any(hr => p.Route.StartsWith(hr)))
             .OrderByDescending(p => p.PublishedOn)
             .ToList();
     }
