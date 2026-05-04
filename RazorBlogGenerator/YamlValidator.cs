@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NJsonSchema;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RazorBlogGenerator.Models.Attributes;
 using Serilog;
 using YamlDotNet.Serialization;
@@ -101,10 +103,26 @@ public static class YamlValidator
         return ValidateYamlAgainstSchema(file, yaml, schema);
     }
 
+    private static JToken YamlObjectToJToken(object? obj)
+    {
+        return obj switch
+        {
+            null => JValue.CreateNull(),
+            Dictionary<object, object> dict => new JObject(
+                dict.Select(kv => new JProperty(kv.Key.ToString()!, YamlObjectToJToken(kv.Value)))),
+            List<object> list => new JArray(list.Select(YamlObjectToJToken)),
+            string s when s is "true" or "True" or "TRUE" => new JValue(true),
+            string s when s is "false" or "False" or "FALSE" => new JValue(false),
+            string s when long.TryParse(s, out var l) => new JValue(l),
+            string s when double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var d) => new JValue(d),
+            _ => new JValue(obj)
+        };
+    }
+
     private static int ValidateYamlAgainstSchema(string file, string yaml, JsonSchema schema)
     {
         var yamlObject = YamlDeserializer.Deserialize<object>(yaml);
-        var json = JsonConvert.SerializeObject(yamlObject);
+        var json = YamlObjectToJToken(yamlObject).ToString(Formatting.None);
 
         var validationErrors = schema.Validate(json);
         if (validationErrors.Count == 0)

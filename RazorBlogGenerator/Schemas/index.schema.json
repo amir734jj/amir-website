@@ -25,7 +25,18 @@
       "$ref": "#/definitions/ContentPage"
     },
     {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "hidden": {
+          "type": "boolean"
+        }
+      }
     }
   ]
 }
