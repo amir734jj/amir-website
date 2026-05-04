@@ -14,9 +14,9 @@ public static class StaticServer
     public static async Task RunAsync(string distDir, int port)
     {
         var fullPath = Path.GetFullPath(distDir);
-        if (!Directory.Exists(fullPath))
+        if (!Directory.Exists(fullPath) || Directory.GetFiles(fullPath, "*", SearchOption.AllDirectories).Length == 0)
         {
-            Log.Error("Directory not found: {Path}", fullPath);
+            Log.Error("Directory not found or empty: {Path}", fullPath);
             Environment.ExitCode = 1;
             return;
         }
