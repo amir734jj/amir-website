@@ -17,7 +17,7 @@ No existing tool matched all of these requirements.
 
 ## Building It
 
-Over a weekend, I built exactly this. The source is available at [github.com/amir734jj/amir-website](https://github.com/amir734jj/amir-website). If you need a lightweight blogging setup, you can drop in your own content without touching any of the infrastructure.
+Over a weekend, I built exactly this. The source is available at [amir734jj/amir-website](https://github.com/amir734jj/amir-website). If you need a lightweight blogging setup, you can drop in your own content without touching any of the infrastructure.
 
 Under the hood it uses:
 

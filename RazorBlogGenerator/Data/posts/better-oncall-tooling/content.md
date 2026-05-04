@@ -24,7 +24,7 @@ We typically encounter several categories of incidents:
 
 ## What I have Learned  
 
-Stay calm and composed—panic doesn't help. Confidence is important, but it needs to be balanced with caution. Always verify instructions before sharing them with customers.  
+Stay calm and composed, panic doesn't help. Confidence is important, but it needs to be balanced with caution. Always verify instructions before sharing them with customers.  
 
 Providing incorrect guidance can have consequences: at best, it prolongs the call; at worst, it can make the issue worse.  
 
