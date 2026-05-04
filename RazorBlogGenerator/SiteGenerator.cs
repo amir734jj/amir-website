@@ -77,23 +77,14 @@ public static class SiteGenerator
             ? Deserializer.Deserialize<SiteConfig>(await File.ReadAllTextAsync(siteConfigPath))
             : new SiteConfig();
 
-        var pages = new List<ContentPage>();
-
-        foreach (var yamlFile in Directory.GetFiles(dataDir, "*.*", SearchOption.AllDirectories)
-            .Where(f => YamlExtensions.Any(ext => f.EndsWith(ext, StringComparison.OrdinalIgnoreCase))))
-        {
-            var fileName = Path.GetFileName(yamlFile);
-            if (SiteConfigNames.Any(n => fileName.Equals(n, StringComparison.OrdinalIgnoreCase)))
-            {
-                continue;
-            }
-
-            var page = LoadPage(yamlFile, dataDir, MarkdownPipeline);
-            if (page != null)
-            {
-                pages.Add(page);
-            }
-        }
+        var pages = Directory.GetFiles(dataDir, "*.*", SearchOption.AllDirectories)
+            .Where(f => YamlExtensions.Any(ext => f.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
+            .Select(yamlFile => new { yamlFile, fileName = Path.GetFileName(yamlFile) })
+            .Where(tuple => !SiteConfigNames.Any(n => tuple.fileName.Equals(n, StringComparison.OrdinalIgnoreCase)))
+            .Select(tuple => LoadPage(tuple.yamlFile, dataDir, MarkdownPipeline))
+            .Where(x => x is not null)
+            .Cast<ContentPage>()
+            .ToList();
 
         // Render all pages, then write in parallel
         var renderTasks = pages.Select(async page =>
