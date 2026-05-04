@@ -55,6 +55,15 @@ public static class StaticServer
                     context.Request.Path = candidate;
                 }
             }
+            else if (!Path.HasExtension(path))
+            {
+                var candidate = path + "/index.html";
+                if (fileProvider.GetFileInfo(candidate).Exists)
+                {
+                    context.Response.Redirect(path + "/", permanent: false);
+                    return;
+                }
+            }
 
             await next();
         });
