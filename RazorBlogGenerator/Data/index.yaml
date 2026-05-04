@@ -2,3 +2,7 @@
 model: IndexModel
 template: Index.cshtml
 title: "Amir's Website"
+description: |
+  Welcome to my personal website where I share my thoughts, projects, and experiences.
+  All the opinion are mine and do not represent my employer.
+

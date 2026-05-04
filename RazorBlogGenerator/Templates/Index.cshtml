@@ -3,9 +3,15 @@
 @model RenderContext
 @{
     var children = Model.GetAllDescendants();
+    var typedModel = Model.Page as IndexModel;
 }
 
 <h2 class="mb-4">@Model.Page.Title</h2>
+
+@if (!string.IsNullOrEmpty(typedModel?.Description))
+{
+  <p class="lead text-secondary mb-5">@typedModel.Description</p>
+}
 
 @if (children.Count == 0)
 {

@@ -3,4 +3,7 @@ using RazorBlogGenerator.Models.Attributes;
 namespace RazorBlogGenerator.Models;
 
 [ContentSchema("index")]
-public class IndexModel : ContentPage;
+public class IndexModel : ContentPage
+{
+    public string? Description { get; set; }
+}

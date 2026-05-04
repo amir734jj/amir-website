@@ -21,12 +21,12 @@ Over a weekend, I built exactly this. The source is available at [github.com/ami
 
 Under the hood it uses:
 
-- [RazorLight](https://github.com/toddams/RazorLight) — Razor templates to HTML, without needing a full ASP.NET runtime
-- [Markdig](https://github.com/xoofx/markdig) — Markdown to HTML
-- [NJsonSchema](https://github.com/RicoSuter/NJsonSchema) — derives JSON schemas from C# classes and validates YAML against them
+- [RazorLight](https://github.com/toddams/RazorLight) - Razor templates to HTML, without needing a full ASP.NET runtime
+- [Markdig](https://github.com/xoofx/markdig) - Markdown to HTML
+- [NJsonSchema](https://github.com/RicoSuter/NJsonSchema) - derives JSON schemas from C# classes and validates YAML against them
 
 ## Why Not Jekyll or Hugo?
 
-I tried Jekyll back in 2017. The command surface is large and the Ruby dependency chain gets in the way. Hugo is powerful but overkill for a simple Markdown blog — the configuration model alone takes time to learn.
+I tried Jekyll back in 2017. The command surface is large and the Ruby dependency chain gets in the way. Hugo is powerful but overkill for a simple Markdown blog - the configuration model alone takes time to learn.
 
 I wanted something that gets out of my way so I can focus on writing. Paired with a small static file server and a CI pipeline that rebuilds and pushes a container image on every commit, this setup does exactly that.
