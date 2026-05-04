@@ -1,0 +1,8 @@
+# $schema: ../../../Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "In pursuit of better blogging tool"
+published_on: "2026-05-03"
+excerpt: "I couldn't find a good blogging tool .. so I built one myself"
+tags:
+  - blogging
