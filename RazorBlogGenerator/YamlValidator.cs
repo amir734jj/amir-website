@@ -1,9 +1,10 @@
-using System.Globalization;
 using NJsonSchema;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RazorBlogGenerator.Models.Attributes;
 using Serilog;
+using YamlDotNet.Core;
+using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -98,26 +99,48 @@ public static class YamlValidator
         return ValidateYamlAgainstSchema(file, yaml, schema);
     }
 
-    private static JToken YamlObjectToJToken(object? obj)
+    private static JToken YamlNodeToJToken(YamlNode node)
     {
-        return obj switch
+        return node switch
         {
-            null => JValue.CreateNull(),
-            Dictionary<object, object> dict => new JObject(
-                dict.Select(kv => new JProperty(kv.Key.ToString()!, YamlObjectToJToken(kv.Value)))),
-            List<object> list => new JArray(list.Select(YamlObjectToJToken)),
-            string s when s is "true" or "True" or "TRUE" => new JValue(true),
-            string s when s is "false" or "False" or "FALSE" => new JValue(false),
-            string s when long.TryParse(s, out var l) => new JValue(l),
-            string s when double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var d) => new JValue(d),
-            _ => new JValue(obj)
+            YamlMappingNode mapping => new JObject(
+                mapping.Children.Select(kv =>
+                    new JProperty(((YamlScalarNode)kv.Key).Value!, YamlNodeToJToken(kv.Value)))),
+            YamlSequenceNode sequence => new JArray(sequence.Children.Select(YamlNodeToJToken)),
+            YamlScalarNode scalar => ScalarToJValue(scalar),
+            _ => JValue.CreateNull()
+        };
+    }
+
+    private static JValue ScalarToJValue(YamlScalarNode scalar)
+    {
+        var value = scalar.Value;
+        if (value is null)
+        {
+            return JValue.CreateNull();
+        }
+
+        // Quoted scalars are explicitly typed as strings in YAML — never coerce them.
+        if (scalar.Style != ScalarStyle.Plain)
+        {
+            return new JValue(value);
+        }
+
+        return value switch
+        {
+            // Plain scalars: coerce only the types the schemas actually use.
+            "true" or "True" or "TRUE" => new JValue(true),
+            "false" or "False" or "FALSE" => new JValue(false),
+            "null" or "Null" or "NULL" or "~" => JValue.CreateNull(),
+            _ => new JValue(value)
         };
     }
 
     private static int ValidateYamlAgainstSchema(string file, string yaml, JsonSchema schema)
     {
-        var yamlObject = YamlDeserializer.Deserialize<object>(yaml);
-        var json = YamlObjectToJToken(yamlObject).ToString(Formatting.None);
+        var yamlStream = new YamlStream();
+        yamlStream.Load(new StringReader(yaml));
+        var json = YamlNodeToJToken(yamlStream.Documents[0].RootNode).ToString(Formatting.None);
 
         var validationErrors = schema.Validate(json);
         if (validationErrors.Count == 0)
