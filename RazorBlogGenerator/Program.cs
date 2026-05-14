@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using CommandLine;
+﻿using CommandLine;
 using RazorBlogGenerator;
 using RazorBlogGenerator.Commands;
 using Serilog;

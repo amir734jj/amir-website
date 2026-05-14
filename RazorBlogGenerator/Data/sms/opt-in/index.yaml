@@ -6,3 +6,5 @@ published_on: "2026-05-04"
 excerpt: "How to opt in to receive SMS messages and what to expect."
 tags:
   - sms
+vars:
+  phone_number: "+18559280098"

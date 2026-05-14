@@ -72,6 +72,29 @@ Routes are derived from the folder structure — no `slug` field needed:
 
 Assets (images, etc.) placed alongside content are copied to the same route in the output.
 
+### Page variables
+
+Any `index.yaml` can declare a `vars` map. References to `{{key}}` in the corresponding `content.md` are resolved to their values at build time by a custom Markdig inline parser.
+
+**`Data/posts/my-post/index.yaml`**
+```yaml
+model: PostModel
+template: Post.cshtml
+title: "My Post"
+published_on: "2026-05-01"
+excerpt: "..."
+vars:
+  phone_number: "+18559280098"
+  support_email: "help@example.com"
+```
+
+**`Data/posts/my-post/content.md`**
+```markdown
+Text **START** to {{phone_number}} to opt in, or email {{support_email}}.
+```
+
+If a key is referenced but not defined, the original `{{key}}` literal is preserved in the output.
+
 ### New page type
 
 1. Create a C# class extending `ContentPage` with `[SchemaName]`

@@ -1,13 +1,6 @@
-using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using AngleSharp.Html;
 using AngleSharp.Html.Parser;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace RazorBlogGenerator;
@@ -21,12 +14,10 @@ public static class DevServer
     {
         await RebuildAsync(dataDir, templatesDir, distDir);
 
-        using var watcher = new FileSystemWatcher();
-        var projectRoot = Path.GetDirectoryName(dataDir)!;
-        watcher.Path = projectRoot;
-        watcher.IncludeSubdirectories = true;
-        watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.CreationTime;
-        watcher.Filter = "*.*";
+        var fullDistPath = Path.GetFullPath(distDir);
+
+        using var dataWatcher = CreateWatcher(dataDir, distDir);
+        using var templatesWatcher = CreateWatcher(templatesDir, distDir);
 
         var debounceTimer = new System.Timers.Timer(300) { AutoReset = false };
         debounceTimer.Elapsed += async (_, _) =>
@@ -50,16 +41,20 @@ public static class DevServer
             }
         };
 
-        watcher.Changed += (_, e) => OnChange(e, debounceTimer, distDir);
-        watcher.Created += (_, e) => OnChange(e, debounceTimer, distDir);
-        watcher.Deleted += (_, e) => OnChange(e, debounceTimer, distDir);
-        watcher.Renamed += (_, e) => OnChange(e, debounceTimer, distDir);
-        watcher.EnableRaisingEvents = true;
+        void Hook(FileSystemWatcher w)
+        {
+            w.Changed += (_, e) => OnChange(e, debounceTimer, fullDistPath);
+            w.Created += (_, e) => OnChange(e, debounceTimer, fullDistPath);
+            w.Deleted += (_, e) => OnChange(e, debounceTimer, fullDistPath);
+            w.Renamed += (_, e) => OnChange(e, debounceTimer, fullDistPath);
+            w.EnableRaisingEvents = true;
+        }
 
-        Log.Information("Watching for changes in {Root}", projectRoot);
+        Hook(dataWatcher);
+        Hook(templatesWatcher);
+
+        Log.Information("Watching {DataDir} and {TemplatesDir}", dataDir, templatesDir);
         Log.Information("Serving at http://localhost:{Port}", port);
-
-        var fullDistPath = Path.GetFullPath(distDir);
 
         var builder = WebApplication.CreateBuilder();
         builder.Logging.ClearProviders();
@@ -75,15 +70,17 @@ public static class DevServer
         await app.RunAsync($"http://localhost:{port}");
     }
 
-    private static void OnChange(FileSystemEventArgs e, System.Timers.Timer debounce, string distDir)
+    private static FileSystemWatcher CreateWatcher(string dir, string distDir) => new()
     {
-        if (e.FullPath.Contains(Path.GetFullPath(distDir)))
-        {
-            return;
-        }
+        Path = dir,
+        IncludeSubdirectories = true,
+        NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.CreationTime,
+        Filter = "*.*",
+    };
 
-        if (e.FullPath.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}") ||
-            e.FullPath.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}"))
+    private static void OnChange(FileSystemEventArgs e, System.Timers.Timer debounce, string fullDistPath)
+    {
+        if (e.FullPath.StartsWith(fullDistPath, StringComparison.Ordinal))
         {
             return;
         }

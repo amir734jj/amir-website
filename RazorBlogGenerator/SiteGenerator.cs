@@ -1,16 +1,8 @@
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using AngleSharp.Html;
 using AngleSharp.Html.Parser;
 using Markdig;
-using Markdig.Renderers;
-using Markdig.Renderers.Html;
-using Markdig.Renderers.Html.Inlines;
-using Markdig.Syntax.Inlines;
+using RazorBlogGenerator.MarkdownExtensions;
 using RazorBlogGenerator.Models;
 using RazorLight;
 using Serilog;
@@ -167,7 +159,14 @@ public static class SiteGenerator
             if (mdFile != null)
             {
                 var markdown = File.ReadAllText(mdFile);
-                post.RenderedHtml = Markdown.ToHtml(markdown, markdownPipeline);
+                var pipeline = page.Vars.Count > 0
+                    ? new MarkdownPipelineBuilder()
+                        .UseAdvancedExtensions()
+                        .Use(new ImgFluidExtension())
+                        .Use(new VarsExtension(page.Vars))
+                        .Build()
+                    : markdownPipeline;
+                post.RenderedHtml = Markdown.ToHtml(markdown, pipeline);
             }
         }
 
@@ -196,37 +195,5 @@ public static class SiteGenerator
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
             File.Copy(file, dest, overwrite: true);
         }
-    }
-}
-
-file sealed class ImgFluidExtension : IMarkdownExtension
-{
-    public void Setup(MarkdownPipelineBuilder pipeline) { }
-
-    public void Setup(MarkdownPipeline pipeline, IMarkdownRenderer renderer)
-    {
-        if (renderer is HtmlRenderer htmlRenderer)
-        {
-            var existing = htmlRenderer.ObjectRenderers.FindExact<LinkInlineRenderer>();
-            if (existing != null)
-            {
-                htmlRenderer.ObjectRenderers.Remove(existing);
-            }
-
-            htmlRenderer.ObjectRenderers.AddIfNotAlready(new ImgFluidLinkInlineRenderer());
-        }
-    }
-}
-
-file sealed class ImgFluidLinkInlineRenderer : LinkInlineRenderer
-{
-    protected override void Write(HtmlRenderer renderer, LinkInline link)
-    {
-        if (link.IsImage)
-        {
-            link.GetAttributes().AddClass("img-fluid");
-        }
-
-        base.Write(renderer, link);
     }
 }

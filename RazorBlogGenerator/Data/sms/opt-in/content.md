@@ -1,6 +1,8 @@
 ## Overview
 
-By providing your phone number and agreeing to receive text messages, you consent to receive SMS notifications from this service. Messages are sent only for account-related purposes such as login verification codes, security alerts, and important account updates.
+By separately and explicitly providing your phone number and agreeing to receive text messages, you consent to receive SMS notifications from this service. Messages are sent only for account-related purposes such as login verification codes, security alerts, and important account updates.
+
+Consent to receive SMS messages is collected independently and is never bundled with account registration, terms of service, or any other agreement. You are not required to opt in to SMS to use this service.
 
 ## Message Frequency
 
@@ -10,15 +12,15 @@ Message and data rates may apply depending on your carrier plan.
 
 ## How to Opt In
 
-You can opt in by providing your phone number during account setup or in your account settings, and checking the box that reads "I agree to receive SMS notifications." By completing this step, you give consent to receive text messages at the number provided.
+SMS consent is obtained through a dedicated, standalone opt-in step that is separate from account creation and all other agreements. To opt in, navigate to your account's notification settings, enter your mobile phone number, and check the box that reads **"I agree to receive SMS notifications from this service."** This checkbox is never pre-checked. Completing this step gives consent solely to receive SMS messages — it does not affect any other account settings or agreements.
 
-You may also opt in by texting **START** to the number displayed in your account settings.
+You may also opt in by texting **START** to {{phone_number}}.
 
 ## How to Opt Out
 
 To stop receiving messages at any time, reply **STOP** to any message you receive. You will receive a single confirmation message and no further texts will be sent.
 
-To re-enable notifications, reply **START** or update your preferences in your account settings.
+To re-enable notifications, reply **START** to {{phone_number}} or update your preferences in your account settings.
 
 ## Support
 

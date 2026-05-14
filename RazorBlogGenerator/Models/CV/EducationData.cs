@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RazorBlogGenerator.Models.CV;
+﻿namespace RazorBlogGenerator.Models.CV;
 
 public class EducationData
 {

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using RazorBlogGenerator.Models.Attributes;
 using YamlDotNet.Serialization;
 
