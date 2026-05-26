@@ -1,0 +1,8 @@
+# $schema: ../../../Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "Coolify is great"
+published_on: "2026-05-25"
+excerpt: "Coolify can replace your entire Heroku free tier with $5"
+tags:
+  - coolify
