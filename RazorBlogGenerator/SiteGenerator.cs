@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
 using AngleSharp.Html;
 using AngleSharp.Html.Parser;
 using Markdig;
@@ -8,6 +9,7 @@ using RazorLight;
 using Serilog;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using static System.Text.RegularExpressions.Regex;
 
 namespace RazorBlogGenerator;
 
@@ -116,13 +118,38 @@ public static class SiteGenerator
         Log.Information("Generated {Count} pages to {DistDir}", pages.Count, distDir);
     }
 
+    // Extracts <pre> blocks from HTML into a list and replaces them with
+    // placeholder <div>s so AngleSharp's PrettyMarkupFormatter won't touch them.
+    internal static (string Html, List<string> PreBlocks) ExtractPreBlocks(string html)
+    {
+        var preBlocks = new List<string>();
+        var htmlWithPlaceholders = Replace(
+            html,
+            @"<pre\b[^>]*>.*?</pre>",
+            m =>
+            {
+                preBlocks.Add(m.Value);
+                return $"<div data-pre-block=\"{preBlocks.Count - 1}\"></div>";
+            },
+            RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        return (htmlWithPlaceholders, preBlocks);
+    }
+
+    // Restores <pre> blocks that were extracted by ExtractPreBlocks.
+    internal static string RestorePreBlocks(string html, List<string> preBlocks) =>
+        Replace(html, """<div data-pre-block="(\d+)"></div>""",
+            m => preBlocks[int.Parse(m.Groups[1].Value)]);
+
     private static async Task<string> FormatHtmlAsync(string html)
     {
+        var (htmlNoPre, preBlocks) = ExtractPreBlocks(html);
+
         var parser = new HtmlParser();
-        var document = await parser.ParseDocumentAsync(html);
+        var document = await parser.ParseDocumentAsync(htmlNoPre);
         await using var writer = new StringWriter();
         document.ToHtml(writer, new PrettyMarkupFormatter());
-        return writer.ToString();
+
+        return RestorePreBlocks(writer.ToString(), preBlocks);
     }
 
     private static ContentPage? LoadPage(string filePath, string dataDir, MarkdownPipeline markdownPipeline)

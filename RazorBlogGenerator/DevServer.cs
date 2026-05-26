@@ -41,15 +41,6 @@ public static class DevServer
             }
         };
 
-        void Hook(FileSystemWatcher w)
-        {
-            w.Changed += (_, e) => OnChange(e, debounceTimer, fullDistPath);
-            w.Created += (_, e) => OnChange(e, debounceTimer, fullDistPath);
-            w.Deleted += (_, e) => OnChange(e, debounceTimer, fullDistPath);
-            w.Renamed += (_, e) => OnChange(e, debounceTimer, fullDistPath);
-            w.EnableRaisingEvents = true;
-        }
-
         Hook(dataWatcher);
         Hook(templatesWatcher);
 
@@ -68,6 +59,16 @@ public static class DevServer
         StaticServer.ConfigureStaticServing(app, fullDistPath);
 
         await app.RunAsync($"http://localhost:{port}");
+        return;
+
+        void Hook(FileSystemWatcher w)
+        {
+            w.Changed += (_, e) => OnChange(e, debounceTimer, fullDistPath);
+            w.Created += (_, e) => OnChange(e, debounceTimer, fullDistPath);
+            w.Deleted += (_, e) => OnChange(e, debounceTimer, fullDistPath);
+            w.Renamed += (_, e) => OnChange(e, debounceTimer, fullDistPath);
+            w.EnableRaisingEvents = true;
+        }
     }
 
     private static FileSystemWatcher CreateWatcher(string dir, string distDir) => new()
@@ -108,8 +109,10 @@ public static class DevServer
 
         foreach (var file in Directory.GetFiles(distDir, "*.html", SearchOption.AllDirectories))
         {
-            var html = await File.ReadAllTextAsync(file);
-            var document = await parser.ParseDocumentAsync(html);
+            var rawHtml = await File.ReadAllTextAsync(file);
+            var (htmlNoPre, preBlocks) = SiteGenerator.ExtractPreBlocks(rawHtml);
+
+            var document = await parser.ParseDocumentAsync(htmlNoPre);
             var body = document.Body;
             if (body == null)
             {
@@ -132,7 +135,7 @@ public static class DevServer
 
             await using var writer = new StringWriter();
             document.ToHtml(writer, new PrettyMarkupFormatter());
-            await File.WriteAllTextAsync(file, writer.ToString());
+            await File.WriteAllTextAsync(file, SiteGenerator.RestorePreBlocks(writer.ToString(), preBlocks));
         }
     }
 }
