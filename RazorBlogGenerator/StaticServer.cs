@@ -62,6 +62,15 @@ public static class StaticServer
             await next();
         });
 
+        app.Use(async (context, next) =>
+        {
+            await next();
+            if (context.Response.ContentType?.StartsWith("text/html", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                context.Response.Headers.CacheControl = "no-store";
+            }
+        });
+
         app.UseStaticFiles(new StaticFileOptions
         {
             FileProvider = fileProvider,
