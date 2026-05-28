@@ -3,3 +3,13 @@ model: IndexModel
 template: Index.cshtml
 title: "SMS"
 hidden: true
+description: >-
+  Amir Hesamian LLC uses SMS messaging strictly for transactional and
+  informational purposes. You may receive text messages for account-related
+  activity such as login verification codes, security alerts, and important
+  account updates, as well as schedule reminders and event notifications
+  relevant to your account.
+  
+  We do not send promotional or marketing messages.
+
+  Message and data rates may apply.
