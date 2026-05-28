@@ -16,6 +16,29 @@ SMS consent is obtained through a dedicated, standalone opt-in step that is sepa
 
 You may also opt in by texting **START** to {{phone_number}}.
 
+## Verbal Consent
+
+When SMS consent is collected verbally (e.g. during a phone call), the following script is used verbatim by the agent or automated system:
+
+---
+
+**Agent:** "Before we finish, I'd like to let you know that we can send you SMS notifications for things like login verification codes, security alerts, and important account updates. These are low-frequency messages sent only when there's account activity that needs your attention. Message and data rates may apply. Would you like to receive these text messages at the phone number you provided?"
+
+**Customer:** *(provides verbal yes/no)*
+
+**If yes — Agent continues:** "Great. I've noted your consent to receive SMS notifications. You can stop these messages at any time by replying STOP to any text you receive, or by updating your notification preferences in your account settings. You'll also receive a confirmation text shortly. Do you have any questions?"
+
+**If no — Agent continues:** "No problem — we won't send you any SMS messages. You can enable this at any time through your account notification settings."
+
+---
+
+After verbal consent is obtained:
+
+- A confirmation SMS is sent to the customer's phone number: *"You've opted in to SMS notifications from this service. Reply STOP at any time to unsubscribe. Msg & data rates may apply."*
+- The date, time, and a record of verbal consent are stored in the customer's account audit log.
+- Consent records are retained for a minimum of five years.
+- Customers can revoke consent at any time by replying **STOP** to any message or updating their account settings.
+
 ## How to Opt Out
 
 To stop receiving messages at any time, reply **STOP** to any message you receive. You will receive a single confirmation message and no further texts will be sent.
