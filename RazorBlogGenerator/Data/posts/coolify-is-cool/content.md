@@ -14,7 +14,11 @@ Domain: hesamian.com
 
 Name: coolify
 Type: A
-Value: <Hetzner Coolify server>
+Value: <Hetzner Coolify server IPv4>
+
+Name: coolify
+Type: AAAA
+Value: <Hetzner Coolify server IPv6>
 
 Name: *.coolify
 Type: CNAME
