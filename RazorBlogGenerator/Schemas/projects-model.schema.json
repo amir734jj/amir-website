@@ -62,6 +62,9 @@
     {
       "type": "object",
       "properties": {
+        "description": {
+          "type": "string"
+        },
         "projects": {
           "type": "array",
           "items": {

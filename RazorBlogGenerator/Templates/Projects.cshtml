@@ -7,6 +7,11 @@
 
 <h2 class="mb-4">@Model.Page.Title</h2>
 
+@if (!string.IsNullOrEmpty(projects.Description))
+{
+  <p class="lead text-secondary mb-5">@Raw(projects.Description.Replace(Environment.NewLine, "<br />"))</p>
+}
+
 @if (projects.Projects.Count == 0)
 {
   <p class="text-muted">No projects yet.</p>
