@@ -2,40 +2,42 @@
 model: ProjectsModel
 template: Projects.cshtml
 title: "Projects"
-description: "All the projects below are open source"
+description: "All the projects + libraries below are open source"
 
 projects:
   - name: "Stream Subscription"
     description: "A library for managing stream-based subscriptions, enabling reactive data flow patterns for real-time event processing."
     github_url: "https://github.com/amir734jj/stream-subscription"
     website_url: "https://stream.coolify.hesamian.com"
-    image: "./stream.png"
+    image: "./images/stream.png"
 
   - name: "Encrypted File Server"
     description: "A secure file server with built-in encryption for safe file storage and sharing."
     github_url: "https://github.com/amir734jj/encrypted-file-server"
     website_url: "https://fs.coolify.hesamian.com"
-    image: "./fs.png"
+    image: "./images/fs.png"
 
   - name: "GeoCast"
     description: "A location-based broadcasting application that enables geo-targeted messaging and content delivery."
     github_url: "https://github.com/amir734jj/geo-cast"
     website_url: "https://geo-cast.coolify.hesamian.com"
-    image: "./geo-cast.png"
+    image: "./images/geo-cast.png"
 
   - name: "Nomad"
     description: "A travel and exploration platform for discovering and sharing places and experiences."
     github_url: "https://github.com/amir734jj/nomad"
     website_url: "https://nomad.coolify.hesamian.com"
-    image: "./nomad.png"
+    image: "./images/nomad.png"
 
   - name: "Symmetric Crypto Chat Room"
     description: "A real-time chat application using symmetric key cryptography for encrypted communication."
     github_url: "https://github.com/amir734jj/symmetric-crypto-chat-room"
+    image: "./images/chat.png"
 
   - name: "Amir Website"
     description: "A .NET static site generation tool powered by Razor templates, Markdown, and YAML — the engine behind this website."
     github_url: "https://github.com/amir734jj/amir-website"
+    image: "./images/blog.png"
 
 libraries:
   - name: "MIPS Simulator"
