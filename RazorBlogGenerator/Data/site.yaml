@@ -5,5 +5,7 @@ footer_text: "Amir Hesamian"
 navbar:
   - label: "Home"
     href: "/"
+  - label: "Projects"
+    href: "/projects/"
   - label: "CV"
     href: "/cv/"
