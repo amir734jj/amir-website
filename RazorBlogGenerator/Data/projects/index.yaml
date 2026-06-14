@@ -6,7 +6,7 @@ description: "All the projects + libraries below are open source"
 
 projects:
   - name: "Stream Subscription"
-    description: "A library for managing stream-based subscriptions, enabling reactive data flow patterns for real-time event processing."
+    description: "A library for managing IceCast stream subscriptions, enabling reactive data flow patterns for real-time event processing."
     github_url: "https://github.com/amir734jj/stream-subscription"
     website_url: "https://stream.coolify.hesamian.com"
     image: "./images/stream.png"
