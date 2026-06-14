@@ -43,6 +43,12 @@
         "period": {
           "type": "string"
         },
+        "thesis_url": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
         "details": {
           "type": "array",
           "items": {
