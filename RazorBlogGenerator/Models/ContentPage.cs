@@ -4,9 +4,9 @@ namespace RazorBlogGenerator.Models;
 
 public class ContentPage
 {
-    public string Model { get; set; } = "";
-    public string Template { get; set; } = "";
-    public string Title { get; set; } = "";
+    public string Model { get; set; } = string.Empty;
+    public string Template { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
     public Dictionary<string, string> Vars { get; set; } = [];
 
     [YamlIgnore]

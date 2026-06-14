@@ -28,3 +28,32 @@ projects:
     github_url: "https://github.com/amir734jj/nomad"
     website_url: "https://nomad.coolify.hesamian.com"
     image: "./nomad.png"
+
+  - name: "Symmetric Crypto Chat Room"
+    description: "A real-time chat application using symmetric key cryptography for encrypted communication."
+    github_url: "https://github.com/amir734jj/symmetric-crypto-chat-room"
+
+  - name: "Amir Website"
+    description: "A .NET static site generation tool powered by Razor templates, Markdown, and YAML — the engine behind this website."
+    github_url: "https://github.com/amir734jj/amir-website"
+
+libraries:
+  - name: "MIPS Simulator"
+    description: "A MIPS architecture simulator written in .NET for executing MIPS assembly programs."
+    github_url: "https://github.com/amir734jj/mips-simulator"
+
+  - name: "EF Core Repository"
+    description: "A generic repository pattern implementation for Entity Framework Core."
+    github_url: "https://github.com/amir734jj/ef-core-repository"
+
+  - name: "Stream Ripper"
+    description: "A tool for capturing and saving IceCast audio streams."
+    github_url: "https://github.com/amir734jj/Stream-ripper"
+
+  - name: "Voice Transfer"
+    description: "A covert data-over-audio tool that uses FSK modulation and the Goertzel algorithm to send files and text as audio tones disguised as phone line noise."
+    github_url: "https://github.com/amir734jj/voice-transfer"
+
+  - name: "Shoutcast Directory Crawler"
+    description: "A crawler for discovering and indexing Shoutcast radio station directories."
+    github_url: "https://github.com/amir734jj/shoutcast-directory-crawler"

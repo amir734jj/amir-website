@@ -12,5 +12,5 @@ public class PostModel : ContentPage
     public bool Hidden { get; set; }
 
     [YamlIgnore]
-    public string RenderedHtml { get; set; } = "";
+    public string RenderedHtml { get; set; } = string.Empty;
 }
