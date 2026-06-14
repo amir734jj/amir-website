@@ -35,7 +35,7 @@ projects:
     image: "./images/chat.png"
 
   - name: "Amir Website"
-    description: "A .NET static site generation tool powered by Razor templates, Markdown, and YAML — the engine behind this website."
+    description: "A .NET static site generation tool powered by Razor templates, Markdown, and YAML - the engine behind this website."
     github_url: "https://github.com/amir734jj/amir-website"
     image: "./images/blog.png"
 
