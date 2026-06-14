@@ -25,6 +25,7 @@ education:
       - "Focused on Compilers, Type Systems, and Attribute Grammars"
       - "Advisor: Dr. John Boyland"
       - "Thesis: Statically Scheduling Circular Remote Attributes Grammars"
+    thesis_url: "https://search.proquest.com/openview/faa7a950803c492d1d067d7a4f9d06e4/1?pq-origsite=gscholar&cbl=18750&diss=y"
 
   - school: "University of Wisconsin-Milwaukee"
     location: "Milwaukee, WI"
@@ -34,6 +35,7 @@ education:
       - "Focused on Lattice cryptography (post-quantum crypto) and LWE-KEX"
       - "Advisor: Dr. Guangwu Xu"
       - "Thesis: Analysis of BCNS and NewHope key-exchange protocols"
+    thesis_url: "https://search.proquest.com/openview/998c00044e3587239b793a20ed04db9c/1?pq-origsite=gscholar&cbl=18750"
 
   - school: "University of Wisconsin-Milwaukee"
     location: "Milwaukee, WI"
