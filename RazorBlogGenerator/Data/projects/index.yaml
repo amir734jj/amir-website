@@ -24,7 +24,7 @@ projects:
     image: "./images/geo-cast.png"
 
   - name: "Nomad"
-    description: "A travel and exploration platform for discovering and sharing places and experiences."
+    description: "A travel and exploration platform for discovering and sharing places and experiences for your 1-day trips."
     github_url: "https://github.com/amir734jj/nomad"
     website_url: "https://nomad.coolify.hesamian.com"
     image: "./images/nomad.png"
