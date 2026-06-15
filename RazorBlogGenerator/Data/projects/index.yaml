@@ -8,7 +8,7 @@ projects:
   - name: "Stream Subscription"
     description: "A library for managing stream-based subscriptions, enabling reactive data flow patterns for real-time event processing."
     github_url: "https://github.com/amir734jj/stream-subscription"
-    website_url: "https://stream.coolify.hesamian.com"
+    website_url: "https://stream.hesamian.com"
     image: "./images/stream.png"
 
   - name: "Encrypted File Server"
@@ -32,12 +32,20 @@ projects:
   - name: "Symmetric Crypto Chat Room"
     description: "A real-time chat application using symmetric key cryptography for encrypted communication."
     github_url: "https://github.com/amir734jj/symmetric-crypto-chat-room"
+    website_url: "https://chat.hesamian.com"
     image: "./images/chat.png"
 
   - name: "Amir Website"
     description: "A .NET static site generation tool powered by Razor templates, Markdown, and YAML - the engine behind this website."
     github_url: "https://github.com/amir734jj/amir-website"
+    website_url: "https://amir.hesamian.com"
     image: "./images/blog.png"
+
+  - name: "Kiosk"
+    description: "Simple read only kiosk website to be displayed on a TV in an office building."
+    github_url: "https://github.com/amir734jj/kiosk"
+    website_url: "https://kiosk.hesamian.com"
+    image: "./images/kiosk.png"
 
 libraries:
   - name: "MIPS Simulator"
