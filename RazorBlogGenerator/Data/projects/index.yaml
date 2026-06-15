@@ -67,3 +67,7 @@ libraries:
   - name: "Shoutcast Directory Crawler"
     description: "A crawler for discovering and indexing Shoutcast radio station directories."
     github_url: "https://github.com/amir734jj/shoutcast-directory-crawler"
+
+  - name: "Custom Malloc"
+    description: "A custom experimental memory allocation library for C."
+    github_url: "https://github.com/amir734jj/custom-malloc"
