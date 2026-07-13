@@ -1,0 +1,9 @@
+# $schema: ../../../Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "Recording Online Radio with Stream Subscription"
+published_on: "2026-07-13"
+excerpt: "A C# library and a full-stack app that rip online radio streams into tagged MP3s."
+tags:
+  - dotnet
+  - angular
