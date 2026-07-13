@@ -1,0 +1,8 @@
+# $schema: ../../../Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "Custom Kiosk Application"
+published_on: "2026-07-13"
+excerpt: "I built a custom kiosk application ... it was fun."
+tags:
+  - coolify
