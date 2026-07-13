@@ -7,4 +7,5 @@ public class ProjectData
     public string? Image { get; set; }
     public string? GithubUrl { get; set; }
     public string? WebsiteUrl { get; set; }
+    public string? BlogUrl { get; set; }
 }

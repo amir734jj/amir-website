@@ -9,6 +9,7 @@ projects:
     description: "A library for managing IceCast stream subscriptions, enabling reactive data flow patterns for real-time event processing."
     github_url: "https://github.com/amir734jj/stream-subscription"
     website_url: "https://stream.hesamian.com"
+    blog_url: "https://amir.coolify.hesamian.com/posts/stream-subscription/"
     image: "./images/stream.png"
 
   - name: "Encrypted File Server"
@@ -45,6 +46,7 @@ projects:
     description: "Simple read only kiosk website to be displayed on a TV in an office building."
     github_url: "https://github.com/amir734jj/kiosk"
     website_url: "https://kiosk.hesamian.com"
+    blog_url: "https://amir.coolify.hesamian.com/posts/kiosk-application/"
     image: "./images/kiosk.png"
 
 libraries:

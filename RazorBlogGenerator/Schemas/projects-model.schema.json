@@ -28,6 +28,12 @@
             "null",
             "string"
           ]
+        },
+        "blog_url": {
+          "type": [
+            "null",
+            "string"
+          ]
         }
       }
     },
