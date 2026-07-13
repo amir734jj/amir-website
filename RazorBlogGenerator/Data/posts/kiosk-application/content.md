@@ -3,7 +3,7 @@
 
 
 ## How to:
-I wrote a custom C# + Blazor application driven by a Raspberry Pi connected to a TV to show the display. The office bought the Pi themselves, and I set it up so it runs entirely off the TV -- powered from the TV's USB port, so there is no extra power brick or cable to worry about. When the TV turns on, the Pi boots; when it turns off, so does the Pi. The admin side (managing offices, announcements, and advertisements) is a Blazor WebAssembly app, but Blazor WASM is too heavy to run smoothly on a low-powered Pi. So the actual `/display` route that the TV shows is a plain server-rendered Razor Page -- no WASM download, no client-side framework, just HTML and a sprinkle of vanilla JavaScript. It pulls together time and date, weather ([OpenMeteo](https://open-meteo.com)), holidays ([API Ninja](https://api-ninjas.com)), a city background image, an announcement ticker, the office directory, and rotating advertisements.
+I wrote a custom C# + Blazor application driven by a Raspberry Pi 4B (2GB RAM) connected to a TV to show the display. The office bought the Pi themselves, and I set it up so it runs entirely off the TV -- powered from the TV's USB port, so there is no extra power brick or cable to worry about. When the TV turns on, the Pi boots; when it turns off, so does the Pi. The admin side (managing offices, announcements, and advertisements) is a Blazor WebAssembly app, but Blazor WASM is too heavy to run smoothly on a low-powered Pi. So the actual `/display` route that the TV shows is a plain server-rendered Razor Page -- no WASM download, no client-side framework, just HTML and a sprinkle of vanilla JavaScript. It pulls together time and date, weather ([OpenMeteo](https://open-meteo.com)), holidays ([API Ninja](https://api-ninjas.com)), a city background image, an announcement ticker, the office directory, and rotating advertisements.
 
 The stack is straightforward:
 
@@ -35,7 +35,7 @@ The refresh interval, ad interval, and ad duration are all configurable from the
 
 Client-side timers are fine when the site is up, but if the server or the network goes down, Chromium just parks itself on an error page and stays there. Nobody is going to walk over and hit F5 on a wall-mounted TV. So the Pi runs its own watchdog.
 
-The whole thing is provisioned by a single `setup.sh` that installs Chromium in kiosk mode, forces 1080p output (the Pi loves to default to 4K on capable displays), disables screen blanking, hides the mouse cursor, and wires up autostart:
+The whole thing is provisioned by a single [`setup.sh`](https://github.com/amir734jj/kiosk/blob/master/setup/setup.sh) that installs Chromium in kiosk mode, forces 1080p output (the Pi loves to default to 4K on capable displays), disables screen blanking, hides the mouse cursor, and wires up autostart:
 
 ```bash
 exec chromium \
