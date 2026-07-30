@@ -1,0 +1,9 @@
+# $schema: ../../../Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "Building an Alternative to Twilio with an Android Phone"
+published_on: "2026-05-02"
+excerpt: "How a $6 Tello plan, an old Android phone, and a self-hosted proxy became a practical two-way SMS API."
+tags:
+  - sms
+  - self-hosting
