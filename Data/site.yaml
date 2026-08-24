@@ -1,4 +1,4 @@
-# $schema: ../Schemas/site-config.schema.json
+# $schema: ../RazorBlogGenerator/Schemas/site-config.schema.json
 site_name: "Journal"
 footer_text: "Amir Hesamian"
 

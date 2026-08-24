@@ -1,4 +1,0 @@
-# $schema: ../../Schemas/index.schema.json
-model: IndexModel
-template: Index.cshtml
-title: "Blog Posts"

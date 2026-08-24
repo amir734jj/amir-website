@@ -6,11 +6,131 @@
     var cv = (ResumeModel)Model.Page;
 }
 
-<div class="bg-light border rounded-3 p-4 mb-4">
+<style>
+  .cv-print { display: none; }
+  @@page { size: letter; margin: .55in .65in; }
+  @@media print {
+    body { background: #fff !important; color: #000 !important; font-family: Arial, sans-serif; font-size: 10.5pt; line-height: 1.22; }
+    body > nav, body > footer, .breadcrumb, .cv-download, .cv-screen { display: none !important; }
+    main.container { max-width: none; padding: 0 !important; }
+    .cv-print { display: block; }
+    .cv-print a { color: #0563c1 !important; text-decoration: underline; }
+    .cv-print-header { border-bottom: 1px solid #777; margin-bottom: .7rem; padding-bottom: .7rem; }
+    .cv-print-header h1 { font-size: 21pt; font-weight: 700; margin: 0 0 .55rem; }
+    .cv-print-contact { display: grid; grid-template-columns: 1fr 1fr; }
+    .cv-print-contact p { margin: 0; }
+    .cv-print-contact-right { text-align: right; }
+    .cv-print-section { margin: 0 0 .85rem; }
+    .cv-print-section h2 { font-size: 12pt; font-weight: 700; margin: 0 0 .35rem; text-transform: uppercase; }
+    .cv-print-entry { break-inside: avoid; margin: 0 0 .65rem; }
+    .cv-print-entry p { margin: 0; }
+    .cv-print-indent { margin-left: .55in; }
+    .cv-print-role { margin-top: .45rem !important; }
+    .cv-print ul { margin: .1rem 0 .25rem .35in; padding-left: .18in; }
+    .cv-print li { margin: 0; padding-left: .06in; }
+  }
+</style>
+
+<div class="d-flex justify-content-end mb-3 cv-download">
+  <button type="button" class="btn btn-primary" onclick="window.print()" title="Open the print dialog to save this CV as a PDF">
+    <i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i> Download PDF
+  </button>
+</div>
+
+<article class="cv-print" aria-hidden="true">
+  <header class="cv-print-header">
+    <h1>@cv.Name</h1>
+    <div class="cv-print-contact">
+      <div>
+        <p>@Raw(cv.Contact.Address.Replace(", ", "<br />"))</p>
+      </div>
+      <div class="cv-print-contact-right">
+        <p>E-mail: <a href="mailto:@cv.Contact.Email">@cv.Contact.Email</a></p>
+        <p>GitHub: <a href="@cv.Contact.GithubUrl">@cv.Contact.GithubLabel</a></p>
+        <p>LinkedIn: <a href="@cv.Contact.LinkedinUrl">@cv.Contact.LinkedinLabel</a></p>
+        <p>Phone #: @cv.Contact.Phone</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="cv-print-section">
+    <h2>Education:</h2>
+    @foreach (var item in cv.Education)
+    {
+      <div class="cv-print-entry cv-print-indent">
+        <p>@item.School, @item.Location</p>
+        <p>@item.Degree, @item.Period</p>
+        @foreach (var detail in item.Details)
+        {
+          if (detail.StartsWith("Thesis title:") && !string.IsNullOrWhiteSpace(item.ThesisUrl))
+          {
+            <p><a href="@item.ThesisUrl">@detail</a></p>
+          }
+          else
+          {
+            <p>@detail</p>
+          }
+        }
+      </div>
+    }
+  </section>
+
+  <section class="cv-print-section">
+    <h2>Technical Skills:</h2>
+    <ul>
+      @foreach (var skill in cv.Skills)
+      {
+        <li><strong>@skill.Category:</strong> @skill.Value</li>
+      }
+    </ul>
+  </section>
+
+  <section class="cv-print-section">
+    <h2>Experience:</h2>
+    @foreach (var item in cv.Experience)
+    {
+      <div class="cv-print-entry">
+        <p>@item.Company, @item.Location</p>
+        <p>@item.Title, @item.Period</p>
+        @foreach (var role in item.Roles)
+        {
+          @if (!string.IsNullOrWhiteSpace(role.Name))
+          {
+            <p class="cv-print-role">@role.Name @if (!string.IsNullOrWhiteSpace(role.Period)) { <text>(@role.Period)</text> }</p>
+          }
+          <ul>
+            @foreach (var bullet in role.Bullets)
+            {
+              <li>@bullet</li>
+            }
+          </ul>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="cv-print-section">
+    <h2>Honors &amp; Awards:</h2>
+    <ul>@foreach (var honor in cv.Honors) { <li>@honor</li> }</ul>
+  </section>
+
+  <section class="cv-print-section">
+    <h2>Additional Activities:</h2>
+    <ul>@foreach (var activity in cv.Activities) { <li>@activity</li> }</ul>
+  </section>
+
+  <section class="cv-print-section">
+    <h2>Work Authorization:</h2>
+    <ul><li>@cv.WorkAuthorization</li></ul>
+  </section>
+</article>
+
+<div class="cv-screen">
+<div class="bg-light border rounded-3 p-4 mb-4 cv-header">
   <div class="d-flex flex-wrap align-items-center gap-4">
     @if (!string.IsNullOrWhiteSpace(cv.ProfileImage))
     {
-      <img src="@cv.ProfileImage" alt="@cv.Name" class="rounded-circle" width="120" height="120" style="object-fit: cover;" />
+      <img src="@cv.ProfileImage" alt="@cv.Name" class="rounded-circle cv-profile-image" width="120" height="120" style="object-fit: cover;" />
     }
     <div>
       <p class="text-uppercase text-muted small fw-semibold mb-1">Software Engineer</p>
@@ -27,12 +147,12 @@
   </div>
 </div>
 
-<div class="card mb-4">
+<div class="card mb-4 cv-section">
   <div class="card-body">
     <h2 class="h6 text-uppercase text-primary fw-bold">Education</h2>
     @foreach (var item in cv.Education)
     {
-      <div class="mb-3">
+      <div class="mb-3 cv-entry">
         <div class="d-flex justify-content-between flex-wrap">
           <strong>@item.School</strong>
           <span class="text-muted">@item.Period</span>
@@ -46,7 +166,7 @@
         }
         @if (!string.IsNullOrWhiteSpace(item.ThesisUrl))
         {
-          <a href="@item.ThesisUrl" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm mt-2">
+          <a href="@item.ThesisUrl" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm mt-2 cv-thesis">
             <i class="bi bi-file-earmark-text"></i> Thesis
           </a>
         }
@@ -55,7 +175,7 @@
   </div>
 </div>
 
-<div class="card mb-4">
+<div class="card mb-4 cv-section">
   <div class="card-body">
     <h2 class="h6 text-uppercase text-primary fw-bold">Technical Skills</h2>
     @foreach (var s in cv.Skills)
@@ -65,12 +185,12 @@
   </div>
 </div>
 
-<div class="card mb-4" id="experience">
+<div class="card mb-4 cv-section" id="experience">
   <div class="card-body">
     <h2 class="h6 text-uppercase text-primary fw-bold">Experience</h2>
     @foreach (var item in cv.Experience)
     {
-      <div class="mb-4 border-bottom pb-3">
+      <div class="mb-4 border-bottom pb-3 cv-entry">
         <div class="d-flex justify-content-between flex-wrap">
           <strong>@item.Company</strong>
           <span class="text-muted">@item.Period</span>
@@ -78,7 +198,10 @@
         <p class="text-secondary mb-2">@item.Title &middot; @item.Location</p>
         @foreach (var role in item.Roles)
         {
-          <h3 class="h6 fw-semibold mb-1">@role.Name @if (!string.IsNullOrWhiteSpace(role.Period)) { <small class="text-muted fw-normal">@role.Period</small> }</h3>
+          @if (!string.IsNullOrWhiteSpace(role.Name))
+          {
+            <h3 class="h6 fw-semibold mb-1">@role.Name @if (!string.IsNullOrWhiteSpace(role.Period)) { <small class="text-muted fw-normal">@role.Period</small> }</h3>
+          }
           <ul>
             @foreach (var b in role.Bullets) { <li>@b</li> }
           </ul>
@@ -88,9 +211,9 @@
   </div>
 </div>
 
-<div class="row g-4 mb-4">
+<div class="row g-4 mb-4 cv-footer-sections">
   <div class="col-md-6">
-    <div class="card h-100">
+    <div class="card h-100 cv-section">
       <div class="card-body">
         <h2 class="h6 text-uppercase text-primary fw-bold">Honors &amp; Awards</h2>
         <ul class="mb-0">@foreach (var h in cv.Honors) { <li>@h</li> }</ul>
@@ -98,7 +221,7 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div class="card h-100">
+    <div class="card h-100 cv-section">
       <div class="card-body">
         <h2 class="h6 text-uppercase text-primary fw-bold">Additional Activities</h2>
         <ul>@foreach (var a in cv.Activities) { <li>@a</li> }</ul>
@@ -107,4 +230,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

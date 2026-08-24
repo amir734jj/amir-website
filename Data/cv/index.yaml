@@ -1,0 +1,200 @@
+# $schema: ../../RazorBlogGenerator/Schemas/resume-model.schema.json
+model: ResumeModel
+template: Resume.cshtml
+title: "Amir Hesamian - CV"
+
+name: "Seyedamirhossein Hesamian (Amir)"
+tagline: "Software Engineer · Compilers · Distributed Systems"
+profile_image: "profile.jpg"
+
+contact:
+  address: "4944 N Santa Monica Blvd, Whitefish Bay, WI 53217"
+  email: "Hesamian@uwm.edu"
+  github_label: "github.com/amir734jj"
+  github_url: "https://github.com/amir734jj"
+  linkedin_label: "linkedin.com/in/hesamian"
+  linkedin_url: "https://linkedin.com/in/hesamian"
+  phone: "(414) 736-2240"
+
+education:
+  - school: "University of Wisconsin-Milwaukee"
+    location: "Milwaukee, WI"
+    degree: "Ph.D.: Computer Science"
+    period: "January 2018 - Dec 2023"
+    details:
+      - "Focused on Compilers, Type Systems, and Attribute Grammars, Advisor: Dr. John Boyland"
+      - "Thesis title: Statically Scheduling Circular Remote Attribute Grammars"
+    thesis_url: "https://search.proquest.com/openview/faa7a950803c492d1d067d7a4f9d06e4/1?pq-origsite=gscholar&cbl=18750&diss=y"
+
+  - school: "University of Wisconsin-Milwaukee"
+    location: "Milwaukee, WI"
+    degree: "Master of Science: Computer Science"
+    period: "September 2015 - May 2017"
+    details:
+      - "Focused on Lattice cryptography (post-quantum crypto) and LWE-KEX, Advisor: Dr. Guangwu Xu"
+      - "Thesis title: Analysis of BCNS and NewHope key-exchange protocols"
+    thesis_url: "https://search.proquest.com/openview/998c00044e3587239b793a20ed04db9c/1?pq-origsite=gscholar&cbl=18750"
+
+  - school: "University of Wisconsin-Milwaukee"
+    location: "Milwaukee, WI"
+    degree: "Bachelor of Science: Computer Science (with Honors)"
+    period: "September 2011 - May 2015"
+    details: []
+
+skills:
+  - category: "Languages"
+    value: "C#, Java, JavaScript, TypeScript, Scala, SQL, Prolog, MIPS, Python, Ruby, F#, and SML"
+  - category: "Front-end"
+    value: "HTML, CSS, Angular, React, Svelte, Blazor"
+  - category: "Back-end"
+    value: ".NET, Node.js, Express.js, Sinatra, Django, Flask, and Spring Boot"
+  - category: "Database"
+    value: "SQL, MongoDB, Cosmos DB, Azure Blob, and Azure Table Storage"
+
+experience:
+  - company: "Microsoft"
+    location: "Redmond, WA (Remote since Jan 2022)"
+    title: "Software Engineer II"
+    period: "April 2021 - Present"
+    roles:
+      - name: "Azure Core/OneFleet Service Fabric"
+        period: "April 2024 - Present"
+        bullets:
+          - "Moved to Service Fabric system services and focused on the FailoverManager system service that maintains the quorums and orchestrates replicas and services (August 2025 - Present)."
+          - "Worked on the Service Fabric hosting and observability team, fixing many backlog and long-standing bugs and features (through August 2025)."
+          - "On-call for Triage and Hosting plus Failover-related incidents for both mitigation and RCA."
+          - "Contributing to the Armada/Azure Storage project, with the goal of scaling Service Fabric to clusters containing many thousands of nodes."
+      - name: "Azure Edge"
+        period: "January 2023 - March 2024"
+        bullets:
+          - "Worked on Azure Stack Edge to help with in-house infrastructure and data center management using the BMC Redfish API, and allocated bare-metal servers using the Azure portal."
+      - name: "Azure EdgeZone platform"
+        period: "April 2021 - December 2022"
+        bullets:
+          - "Worked on Azure Site Recovery service and Azure Backup to enable support for EdgeZone data centers and the use of remote and local cache accounts."
+          - "Contributed to the Azure BCDR background service running on all Azure VMs, using C# for the Windows service and Python for Linux, which efficiently copies the file system of EdgeZone VMs to Azure Page Blob storage."
+          - "Helped the BCDR team automate Swagger specification generation, SDK generation, and PowerShell modules that use the generated .NET SDKs."
+          - "Monitored EdgeZone data centers and the availability of Azure services to EdgeZone VMs by writing functional tests and connecting them to create a Power BI dashboard."
+          - "Contributed concurrency controls for continuous functional tests to avoid overwhelming an Azure service, node cluster, or EdgeZone."
+          - "Wrote technical documents and recorded demos showing that EdgeZone VMs have BCDR capabilities similar to regular Azure-based VMs."
+          - "Wrote specification documents for EdgeZone-related BCDR feature development and coordinated with PMs and stakeholders."
+
+  - company: "UW-Milwaukee Department of Computer Science"
+    location: "Milwaukee, WI"
+    title: "Adjunct Instructor"
+    period: "January 2022 - May 2022"
+    roles:
+      - name: ""
+        period: ""
+        bullets:
+          - "Instructor for the Introduction to Compilers course."
+          - "Dockerized the reference COOL compiler written in Scala, which outputs SPIM assembly."
+          - "Modified the SPIM simulator to work with the COOL exception feature."
+
+  - company: "Northwestern Mutual"
+    location: "Milwaukee, WI"
+    title: "Full-Stack Software Engineer"
+    period: "November 2017 - March 2021"
+    roles:
+      - name: ""
+        period: ""
+        bullets:
+          - "Utilized MongoDB, .NET Core, and React/Redux to build a bond benchmarking application."
+          - "Utilized and extended the C# LINQ Expression tree to create a business rule engine."
+          - "Used the StructureMap library (IoC) to implement a proxy pattern for the data-access layer (DAL)."
+          - "Utilized a dynamic proxy and the AOP paradigm to implement dynamic method parameter validation."
+          - "Utilized asynchronous Python (PyMongo and Motor) to create a Mongo database cleanup script."
+          - "Utilized Windows service, Akka.NET, and SignalR to create a distributed application."
+          - "Used Kafka, Azure Event Hub, and Vue.js to create a real-time log monitoring page."
+          - "Utilized Scala Spark to create a compute engine for bond investment benchmark calculations."
+          - "Created a company-wide .NET Core boilerplate for future applications."
+          - "Created a CSV library to import and export complex objects."
+          - "Created a C# library to emit simple C# classes and include them in the application at runtime."
+          - "Created a JWT token management FSM to manage and refresh JWT tokens."
+          - "Conducted multiple company-wide C#/.NET Core/Angular workshops."
+
+  - company: "UW-Milwaukee Department of Computer Science"
+    location: "Milwaukee, WI"
+    title: "Graduate Teaching Assistant"
+    period: "September 2019 - May 2020"
+    roles:
+      - name: ""
+        period: ""
+        bullets:
+          - "CS-351: Data Structures and Algorithms."
+          - "CS 655: Compiler Implementation Laboratory."
+
+  - company: "Brady Corporation"
+    location: "Milwaukee, WI"
+    title: "Software Developer"
+    period: "January 2017 - October 2017"
+    roles:
+      - name: ""
+        period: ""
+        bullets:
+          - "Worked as part of the digital team, using jQuery, Backbone.js (legacy), AngularJS, and Foundation to upgrade the existing e-commerce website, BradyID.com, and componentize JavaScript code."
+          - "Created a single-page JavaScript app for product search and narrowed down categories and subcategories by interacting with the Elasticsearch API."
+          - "Contributed to making the website mobile responsive using CSS, Sass, and flexbox."
+          - "Converted legacy Backbone.js code to AngularJS."
+          - "Introduced Node, Bower, and Gulp build tasks to manage front-end dependencies."
+          - "Worked with C#, Sitecore, and .NET Standard for the back end."
+          - "Wrote Selenium tests in C# using ChromeDriver and PhantomJS (headless browser)."
+
+  - company: "UW-Milwaukee Department of Computer Science"
+    location: "Milwaukee, WI"
+    title: "Graduate Teaching Assistant"
+    period: "September 2015 - May 2017"
+    roles:
+      - name: "CS-315: Assembly Language Programming - MIPS"
+        period: ""
+        bullets:
+          - "Conducted discussion and lab sessions."
+          - "Wrote and graded questions for programming sections of the exams."
+          - "Wrote and graded weekly programming homework."
+          - "Wrote lecture notes for students and other teaching assistants responsible for the class."
+
+  - company: "Northwestern Mutual, Enterprise Projects Department"
+    location: "Milwaukee, WI"
+    title: "Intern Internet Application Developer"
+    period: "June 2015 - August 2015"
+    roles:
+      - name: "OBA Project (Scrum Team)"
+        period: ""
+        bullets:
+          - "Worked mainly with Underscore.js, Backbone.js, and the Backbone-forms module for the front end of the Outside Business Activity Wizard web application, and with Node.js and Express.js for proof-of-concept work."
+          - "Added Grunt and Bower to build project dependencies, minify JavaScript files, and perform package management and versioning."
+          - "Converted all outside business activity disclosure forms to a relational database format using IBM DB2 and SQLite, and designed wizard steps and paths that allow applications to fetch data and create forms."
+          - "Worked briefly with Java EE and WebSphere for the back end, including the web UI and web services."
+
+  - company: "UW-Milwaukee Department of Materials Science and Engineering"
+    location: "Milwaukee, WI"
+    title: "Undergraduate Researcher"
+    period: "May 2013 - May 2015"
+    roles:
+      - name: ""
+        period: ""
+        bullets:
+          - "Worked with Dr. Pradeep Rohatgi (Distinguished Professor) to use MAGMA and SolidWorks to simulate the solidification of different materials and teach graduate students how to use the software, applying computational geometry and differential equations."
+
+  - company: "Swick Technologies"
+    location: "Wauwatosa, WI"
+    title: "IT Specialist"
+    period: "July 2011 - August 2011"
+    roles:
+      - name: ""
+        period: ""
+        bullets:
+          - "Worked with Active Directory and Microsoft Deployment Services to deploy Windows 7 on high school computers."
+
+honors:
+  - "FEF / AFS Scholarship, 2014, 2015, and 2017: 3 x $1,000"
+  - "Certificate of Merit, 2013, for outstanding academic achievement in Mathematical Science 234: Linear Algebra and Differential Equations"
+  - "Dean's List in 2011, 2012, 2013, and 2014"
+  - "Graduated from the College of Engineering and Applied Science with Honors in 2015"
+  - "First place in the first round of the Northwestern Mutual Fusion Hackathon 2018, out of more than 120 teams"
+
+activities:
+  - "Volunteered to develop the Tour of Milwaukee website (MilwaukeeInternationals.com) to facilitate the annual UW-Milwaukee city tour for new international university students."
+  - "Participated in the Northwestern Mutual ML Hackathon to build a social network analyzer app using polynomial regression, NLP sentiment analysis, and keyphrase detection."
+
+work_authorization: "Naturalized U.S. citizen (naturalized in 2015)"

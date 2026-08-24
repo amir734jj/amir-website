@@ -1,4 +1,4 @@
-# $schema: ../../../Schemas/post-model.schema.json
+# $schema: ../../../RazorBlogGenerator/Schemas/post-model.schema.json
 model: PostModel
 template: Post.cshtml
 title: "My experiences with AI-assisted coding tools in 2026"

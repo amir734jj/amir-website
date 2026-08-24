@@ -1,4 +1,4 @@
-# $schema: ../../Schemas/projects-model.schema.json
+# $schema: ../../RazorBlogGenerator/Schemas/projects-model.schema.json
 model: ProjectsModel
 template: Projects.cshtml
 title: "Projects"

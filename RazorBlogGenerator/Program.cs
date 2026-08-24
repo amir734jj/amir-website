@@ -13,7 +13,7 @@ await Parser.Default.ParseArguments<BuildOptions, SchemaOptions, ValidateOptions
         {
             var root = FindProjectRoot();
             await SiteGenerator.GenerateAsync(
-                dataDir: Path.Combine(root, "Data"),
+                dataDir: FindDataDir(root),
                 templatesDir: Path.Combine(root, "Templates"),
                 distDir: opts.Output ?? Path.Combine(root, "dist"));
         },
@@ -27,7 +27,7 @@ await Parser.Default.ParseArguments<BuildOptions, SchemaOptions, ValidateOptions
         {
             var root = FindProjectRoot();
             var exitCode = await YamlValidator.ValidateAsync(
-                Path.Combine(root, "Data"),
+                FindDataDir(root),
                 opts.Schemas ?? Path.Combine(root, "Schemas"));
             Environment.ExitCode = exitCode > 0 ? 1 : 0;
         },
@@ -36,7 +36,7 @@ await Parser.Default.ParseArguments<BuildOptions, SchemaOptions, ValidateOptions
             var root = FindProjectRoot();
             var distDir = opts.Output ?? Path.Combine(root, "dist");
             await DevServer.RunAsync(
-                Path.Combine(root, "Data"),
+                FindDataDir(root),
                 Path.Combine(root, "Templates"),
                 distDir,
                 opts.Port);
@@ -75,4 +75,16 @@ static string FindProjectRoot()
         dir = Directory.GetParent(dir)?.FullName;
     }
     return Directory.GetCurrentDirectory();
+}
+
+static string FindDataDir(string projectRoot)
+{
+    var candidates = new[]
+    {
+        Path.Combine(projectRoot, "Data"),
+        Path.GetFullPath(Path.Combine(projectRoot, "..", "Data"))
+    };
+
+    return candidates.FirstOrDefault(Directory.Exists)
+        ?? throw new DirectoryNotFoundException("Could not find the Data directory.");
 }
