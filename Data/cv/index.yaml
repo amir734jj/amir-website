@@ -51,7 +51,7 @@ education:
 
 skills:
   - category: "Languages"
-    value: "C#, C++, Java, JavaScript, TypeScript, Scala, SQL, Prolog, MIPS, Python, Ruby, F#, and SML"
+    value: "C#, C++, Java, JavaScript, TypeScript, Scala, Prolog, MIPS, Python, Ruby, and SML"
   - category: "Front-end"
     value: "HTML, CSS, Angular, React, Svelte, Blazor"
   - category: "Back-end"
