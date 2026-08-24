@@ -63,7 +63,8 @@ experience:
         period: "Apr 2024 - Present"
         bullets:
           - "Working on service fabric hosting/observability and fixing long-standing bugs and feature gaps."
-          - "On-call for triage and hosting incidents, including mitigation and RCA."
+          - "On-call for triage and hosting and Failover/ClusterManger incidents, including mitigation and RCA."
+          - "Contributing to the Armada/Azure Storage project where the end goal is scaling up ServiceFabric and running many thousands node clusters"
       - name: "Azure Edge"
         period: "Jan 2023 - Mar 2024"
         bullets:
