@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using AngleSharp.Html;
 using AngleSharp.Html.Parser;
 using Markdig;
+using PeachPDF;
 using RazorBlogGenerator.MarkdownExtensions;
 using RazorBlogGenerator.Models;
 using RazorLight;
@@ -113,9 +114,83 @@ public static class SiteGenerator
 
         await Task.WhenAll(writeTasks);
 
+        var pdfTasks = pages
+            .Where(page => page.Pdf is not null)
+            .Select(async page =>
+            {
+                var pdf = page.Pdf!;
+                if (Path.GetFileName(pdf.Output) != pdf.Output)
+                {
+                    throw new InvalidOperationException($"PDF output must be a file name: {pdf.Output}");
+                }
+
+                var context = new RenderContext
+                {
+                    Page = page,
+                    AllPages = pages,
+                    Site = siteConfig,
+                    IsPdf = true
+                };
+                var bodyHtml = await engine.CompileRenderAsync(page.Template, context);
+                var layoutContext = new RenderContext
+                {
+                    Page = page,
+                    AllPages = pages,
+                    Site = siteConfig,
+                    BodyHtml = bodyHtml,
+                    IsPdf = true
+                };
+                var html = await engine.CompileRenderAsync("Layout.cshtml", layoutContext);
+                var config = new PdfGenerateConfig
+                {
+                    PageSize = PageSize.Letter,
+                    PageOrientation = PageOrientation.Portrait,
+                    EnableTaggedPdf = true,
+                    AllowLocalFileAccess = false
+                };
+
+                var generator = new PdfGenerator();
+                foreach (var fontFile in pdf.FontFiles)
+                {
+                    await using var fontStream = File.OpenRead(ResolvePageAssetPath(dataDir, page, fontFile));
+                    await generator.AddFontFromStream(fontStream);
+                }
+
+                var document = await generator.GeneratePdf(html, config);
+                var outputDir = Path.Combine(distDir, page.Route.Trim('/'));
+                Directory.CreateDirectory(outputDir);
+                await using var stream = File.Create(Path.Combine(outputDir, pdf.Output));
+                document.Save(stream);
+
+                Log.Information("Generated PDF {Output} for {Route}", pdf.Output, page.Route);
+            });
+
+        await Task.WhenAll(pdfTasks);
+
         CopyColocatedAssets(dataDir, distDir);
 
         Log.Information("Generated {Count} pages to {DistDir}", pages.Count, distDir);
+    }
+
+    private static string ResolvePageAssetPath(string dataDir, ContentPage page, string relativePath)
+    {
+        if (Path.IsPathRooted(relativePath))
+        {
+            throw new InvalidOperationException($"PDF asset path must be relative: {relativePath}");
+        }
+
+        var pageDir = Path.GetFullPath(Path.Combine(
+            dataDir,
+            page.Route.Trim('/').Replace('/', Path.DirectorySeparatorChar)));
+        var fullPath = Path.GetFullPath(Path.Combine(pageDir, relativePath));
+        var pageDirPrefix = pageDir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+
+        if (!fullPath.StartsWith(pageDirPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException($"PDF asset path must stay within the page directory: {relativePath}");
+        }
+
+        return fullPath;
     }
 
     // Extracts <pre> blocks from HTML into a list and replaces them with

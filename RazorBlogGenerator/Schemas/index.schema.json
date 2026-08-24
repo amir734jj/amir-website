@@ -20,8 +20,38 @@
             "type": "string"
           }
         },
+        "pdf": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/PdfOptions"
+            }
+          ]
+        },
         "route": {
           "type": "string"
+        }
+      }
+    },
+    "PdfOptions": {
+      "type": "object",
+      "properties": {
+        "output": {
+          "type": "string"
+        },
+        "font_family": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "font_files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }

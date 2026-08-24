@@ -83,6 +83,9 @@
         "period": {
           "type": "string"
         },
+        "page_break_before": {
+          "type": "boolean"
+        },
         "roles": {
           "type": "array",
           "items": {
@@ -99,6 +102,9 @@
         },
         "period": {
           "type": "string"
+        },
+        "page_break_before": {
+          "type": "boolean"
         },
         "bullets": {
           "type": "array",
@@ -126,8 +132,38 @@
             "type": "string"
           }
         },
+        "pdf": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/PdfOptions"
+            }
+          ]
+        },
         "route": {
           "type": "string"
+        }
+      }
+    },
+    "PdfOptions": {
+      "type": "object",
+      "properties": {
+        "output": {
+          "type": "string"
+        },
+        "font_family": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "font_files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }

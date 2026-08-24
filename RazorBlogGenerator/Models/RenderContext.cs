@@ -6,6 +6,7 @@ public class RenderContext
     public required IReadOnlyList<ContentPage> AllPages { get; init; }
     public required SiteConfig Site { get; init; }
     public string BodyHtml { get; init; } = string.Empty;
+    public bool IsPdf { get; init; }
 
     public IReadOnlyList<PostModel> GetAllDescendants()
     {

@@ -4,45 +4,57 @@
 @model RenderContext
 @{
     var cv = (ResumeModel)Model.Page;
+  var addressBreak = cv.Contact.Address.IndexOf(", ", StringComparison.Ordinal);
 }
 
 <style>
   .cv-print { display: none; }
-  @@page { size: letter; margin: .55in .65in; }
-  @@media print {
-    body { background: #fff !important; color: #000 !important; font-family: Arial, sans-serif; font-size: 10.5pt; line-height: 1.22; }
-    body > nav, body > footer, .breadcrumb, .cv-download, .cv-screen { display: none !important; }
-    main.container { max-width: none; padding: 0 !important; }
-    .cv-print { display: block; }
-    .cv-print a { color: #0563c1 !important; text-decoration: underline; }
-    .cv-print-header { border-bottom: 1px solid #777; margin-bottom: .7rem; padding-bottom: .7rem; }
-    .cv-print-header h1 { font-size: 21pt; font-weight: 700; margin: 0 0 .55rem; }
-    .cv-print-contact { display: grid; grid-template-columns: 1fr 1fr; }
-    .cv-print-contact p { margin: 0; }
-    .cv-print-contact-right { text-align: right; }
-    .cv-print-section { margin: 0 0 .85rem; }
-    .cv-print-section h2 { font-size: 12pt; font-weight: 700; margin: 0 0 .35rem; text-transform: uppercase; }
-    .cv-print-entry { break-inside: avoid; margin: 0 0 .65rem; }
-    .cv-print-entry p { margin: 0; }
-    .cv-print-indent { margin-left: .55in; }
-    .cv-print-role { margin-top: .45rem !important; }
-    .cv-print ul { margin: .1rem 0 .25rem .35in; padding-left: .18in; }
-    .cv-print li { margin: 0; padding-left: .06in; }
+  @@page {
+    size: letter portrait;
+    margin: .48in .58in .5in;
+    @@bottom-left { content: "Seyedamirhossein Hesamian"; color: #555; font-size: 7.5pt; }
+    @@bottom-right { content: counter(page) " / " counter(pages); color: #555; font-size: 7.5pt; }
+  }
+  .cv-print { color: #111; font-size: 9.25pt; line-height: 1.24; }
+  .cv-print * { box-sizing: border-box; }
+  .cv-print a { color: inherit; text-decoration: none; }
+  .cv-print p { margin: 0; }
+  .cv-print-header { border-bottom: .7pt solid #555; margin-bottom: 11pt; padding-bottom: 7pt; }
+  .cv-print-header h1 { font-size: 20pt; font-weight: 700; line-height: 1.05; margin: 0 0 4pt; }
+  .cv-print-tagline { font-size: 9.5pt; font-style: italic; margin-bottom: 3pt !important; }
+  .cv-print-contact { display: grid; grid-template-columns: 1fr 1fr; }
+  .cv-print-contact-right { color: #333; text-align: right; }
+  .cv-print-section { margin: 0 0 10pt; }
+  .cv-print-section h2 { font-size: 10.5pt; font-variant: small-caps; margin: 0 0 5pt; text-transform: none; }
+  .cv-print-entry { margin: 0 0 7pt; }
+  .cv-print-entry p { margin: 0; }
+  .cv-print-entry > p:first-child { break-after: avoid; font-weight: 700; }
+  .cv-print-entry > p:nth-child(2) { break-after: avoid; font-style: italic; }
+  .cv-print-indent { break-inside: avoid; margin-left: 14pt; }
+  .cv-print-role { break-after: avoid; font-style: normal; font-weight: 700; margin-top: 4pt !important; }
+  .cv-print ul { margin: 2.5pt 0 0 16pt; padding: 0; }
+  .cv-print li { break-inside: avoid; margin: 0 0 1.5pt; padding-left: 2pt; }
+  .cv-page-break { break-before: page; }
+  @if (Model.IsPdf)
+  {
+    <text>.cv-print { display: block; } .cv-screen { display: none; }</text>
   }
 </style>
 
-<div class="d-flex justify-content-end mb-3 cv-download">
-  <button type="button" class="btn btn-primary" onclick="window.print()" title="Open the print dialog to save this CV as a PDF">
-    <i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i> Download PDF
-  </button>
-</div>
-
-<article class="cv-print" aria-hidden="true">
+<article class="cv-print" lang="en" aria-hidden="@(!Model.IsPdf)">
   <header class="cv-print-header">
     <h1>@cv.Name</h1>
+    <p class="cv-print-tagline">@cv.Tagline</p>
     <div class="cv-print-contact">
       <div>
-        <p>@Raw(cv.Contact.Address.Replace(", ", "<br />"))</p>
+        @if (addressBreak >= 0)
+        {
+          <p>@cv.Contact.Address[..addressBreak]<br />@cv.Contact.Address[(addressBreak + 2)..]</p>
+        }
+        else
+        {
+          <p>@cv.Contact.Address</p>
+        }
       </div>
       <div class="cv-print-contact-right">
         <p>E-mail: <a href="mailto:@cv.Contact.Email">@cv.Contact.Email</a></p>
@@ -89,21 +101,23 @@
     <h2>Experience:</h2>
     @foreach (var item in cv.Experience)
     {
-      <div class="cv-print-entry">
+      <div class="cv-print-entry@(item.PageBreakBefore ? " cv-page-break" : "")">
         <p>@item.Company, @item.Location</p>
         <p>@item.Title, @item.Period</p>
         @foreach (var role in item.Roles)
         {
-          @if (!string.IsNullOrWhiteSpace(role.Name))
-          {
-            <p class="cv-print-role">@role.Name @if (!string.IsNullOrWhiteSpace(role.Period)) { <text>(@role.Period)</text> }</p>
-          }
-          <ul>
-            @foreach (var bullet in role.Bullets)
+          <div class="@(role.PageBreakBefore ? "cv-page-break" : "")">
+            @if (!string.IsNullOrWhiteSpace(role.Name))
             {
-              <li>@bullet</li>
+              <p class="cv-print-role">@role.Name @if (!string.IsNullOrWhiteSpace(role.Period)) { <text>(@role.Period)</text> }</p>
             }
-          </ul>
+            <ul>
+              @foreach (var bullet in role.Bullets)
+              {
+                <li>@bullet</li>
+              }
+            </ul>
+          </div>
         }
       </div>
     }

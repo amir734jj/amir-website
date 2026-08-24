@@ -72,6 +72,21 @@ Routes are derived from the folder structure — no `slug` field needed:
 
 Assets (images, etc.) placed alongside content are copied to the same route in the output.
 
+### Build-time PDFs
+
+A page can declaratively generate a PDF from a dedicated Razor template:
+
+```yaml
+pdf:
+  output: amir-hesamian-cv.pdf
+  font_family: "Latin Modern Roman"
+  font_files:
+    - fonts/lmroman10-regular.otf
+    - fonts/lmroman10-bold.otf
+```
+
+The page's Razor template is rendered in PDF mode and written beside its generated `index.html`. Font paths are relative to the page's data directory and are registered with the PDF renderer at build time. The CV model also supports `page_break_before: true` on experience entries and roles for intentional page composition.
+
 ### Page variables
 
 Any `index.yaml` can declare a `vars` map. References to `{{key}}` in the corresponding `content.md` are resolved to their values at build time by a custom Markdig inline parser.

@@ -2,6 +2,14 @@
 model: ResumeModel
 template: Resume.cshtml
 title: "Amir Hesamian - CV"
+pdf:
+  output: amir-hesamian-cv.pdf
+  font_family: "Latin Modern Roman"
+  font_files:
+    - fonts/lmroman10-regular.otf
+    - fonts/lmroman10-bold.otf
+    - fonts/lmroman10-italic.otf
+    - fonts/lmroman10-bolditalic.otf
 
 name: "Seyedamirhossein Hesamian (Amir)"
 tagline: "Software Engineer · Compilers · Distributed Systems"
@@ -43,13 +51,13 @@ education:
 
 skills:
   - category: "Languages"
-    value: "C#, Java, JavaScript, TypeScript, Scala, SQL, Prolog, MIPS, Python, Ruby, F#, and SML"
+    value: "C#, C++, Java, JavaScript, TypeScript, Scala, SQL, Prolog, MIPS, Python, Ruby, F#, and SML"
   - category: "Front-end"
     value: "HTML, CSS, Angular, React, Svelte, Blazor"
   - category: "Back-end"
-    value: ".NET, Node.js, Express.js, Sinatra, Django, Flask, and Spring Boot"
+    value: ".NET, Node.js, Express.js, Django, Flask, and Spring Boot"
   - category: "Database"
-    value: "SQL, MongoDB, Cosmos DB, Azure Blob, and Azure Table Storage"
+    value: "SQL, MongoDB, Cosmos DB, and Azure Blob"
 
 experience:
   - company: "Microsoft"
@@ -63,7 +71,7 @@ experience:
           - "Moved to Service Fabric system services and focused on the FailoverManager system service that maintains the quorums and orchestrates replicas and services (August 2025 - Present)."
           - "Worked on the Service Fabric hosting and observability team, fixing many backlog and long-standing bugs and features (through August 2025)."
           - "On-call for Triage and Hosting plus Failover-related incidents for both mitigation and RCA."
-          - "Contributing to the Armada/Azure Storage project, with the goal of scaling Service Fabric to clusters containing many thousands of nodes."
+          - "Contributing to the Armada/Azure Storage project, with the goal of scaling Service Fabric to clusters containing many 1000s of nodes."
       - name: "Azure Edge"
         period: "January 2023 - March 2024"
         bullets:

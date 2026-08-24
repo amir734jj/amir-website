@@ -8,6 +8,7 @@ RUN dotnet publish RazorBlogGenerator/RazorBlogGenerator.csproj -c Release -o /a
 FROM mcr.microsoft.com/dotnet/aspnet:10.0-preview-alpine AS generate
 WORKDIR /app
 COPY --from=build /app .
+RUN apk add --no-cache font-dejavu
 
 RUN dotnet RazorBlogGenerator.dll validate
 RUN dotnet RazorBlogGenerator.dll build -o /site

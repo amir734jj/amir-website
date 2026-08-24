@@ -8,6 +8,7 @@ public class ContentPage
     public string Template { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public Dictionary<string, string> Vars { get; set; } = [];
+    public PdfOptions? Pdf { get; set; }
 
     [YamlIgnore]
     public string Route { get; set; } = "/";
