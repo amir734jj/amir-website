@@ -3,7 +3,7 @@
 @using RazorBlogGenerator.Models.CV
 @model RenderContext
 @{
-    var cv = (ResumeModel)Model.Page;
+  var cv = (ResumeModel)Model.Page;
   var addressBreak = cv.Contact.Address.IndexOf(", ", StringComparison.Ordinal);
 }
 

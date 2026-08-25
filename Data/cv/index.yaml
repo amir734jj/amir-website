@@ -71,7 +71,7 @@ experience:
           - "Moved to Service Fabric system services and focused on the FailoverManager system service that maintains the quorums and orchestrates replicas and services (August 2025 - Present)."
           - "Worked on the Service Fabric hosting and observability team, fixing many backlog and long-standing bugs and features (through August 2025)."
           - "On-call for Triage and Hosting plus Failover-related incidents for both mitigation and RCA."
-          - "Contributing to the Armada/Azure Storage project, with the goal of scaling Service Fabric to clusters containing many 1000s of nodes."
+          - "Contributing to the Azure Storage project (Armada), with the goal of scaling Service Fabric to clusters containing many 1000s of nodes by making them work autonomously (Coast) during network outage."
       - name: "Azure Edge"
         period: "January 2023 - March 2024"
         bullets:
