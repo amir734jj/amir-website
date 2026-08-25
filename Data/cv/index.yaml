@@ -95,7 +95,7 @@ experience:
       - name: ""
         period: ""
         bullets:
-          - "Instructor for the Introduction to Compilers course."
+          - "Instructor for the Introduction to Compilers course (CS-655)."
           - "Dockerized the reference COOL compiler written in Scala, which outputs SPIM assembly."
           - "Modified the SPIM simulator to work with the COOL exception feature."
 
@@ -130,7 +130,7 @@ experience:
         period: ""
         bullets:
           - "CS-351: Data Structures and Algorithms."
-          - "CS 655: Compiler Implementation Laboratory."
+          - "CS-655: Compiler Implementation Laboratory."
 
   - company: "Brady Corporation"
     location: "Milwaukee, WI"
@@ -192,7 +192,7 @@ experience:
       - name: ""
         period: ""
         bullets:
-          - "Worked with Active Directory and Microsoft Deployment Services to deploy Windows 7 on high school computers."
+          - "Worked with Active Directory and Microsoft Deployment Services to deploy Windows 7 on high school computers via PXE boot."
 
 honors:
   - "FEF / AFS Scholarship, 2014, 2015, and 2017: 3 x $1,000"
