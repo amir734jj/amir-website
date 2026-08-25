@@ -47,7 +47,6 @@ education:
     location: "Milwaukee, WI"
     degree: "Bachelor of Science: Computer Science (with Honors)"
     period: "September 2011 - May 2015"
-    details: []
 
 skills:
   - category: "Languages"
@@ -92,9 +91,7 @@ experience:
     title: "Adjunct Instructor"
     period: "January 2022 - May 2022"
     roles:
-      - name: ""
-        period: ""
-        bullets:
+      - bullets:
           - "Instructor for the Introduction to Compilers course (CS-655)."
           - "Dockerized the reference COOL compiler written in Scala, which outputs SPIM assembly."
           - "Modified the SPIM simulator to work with the COOL exception feature."
@@ -104,9 +101,7 @@ experience:
     title: "Full-Stack Software Engineer"
     period: "November 2017 - March 2021"
     roles:
-      - name: ""
-        period: ""
-        bullets:
+      - bullets:
           - "Utilized MongoDB, .NET Core, and React/Redux to build a bond benchmarking application."
           - "Utilized and extended the C# LINQ Expression tree to create a business rule engine."
           - "Used the StructureMap library (IoC) to implement a proxy pattern for the data-access layer (DAL)."
@@ -126,9 +121,7 @@ experience:
     title: "Graduate Teaching Assistant"
     period: "September 2019 - May 2020"
     roles:
-      - name: ""
-        period: ""
-        bullets:
+      - bullets:
           - "CS-351: Data Structures and Algorithms."
           - "CS-655: Compiler Implementation Laboratory."
 
@@ -137,9 +130,7 @@ experience:
     title: "Software Developer"
     period: "January 2017 - October 2017"
     roles:
-      - name: ""
-        period: ""
-        bullets:
+      - bullets:
           - "Worked as part of the digital team, using jQuery, Backbone.js (legacy), AngularJS, and Foundation to upgrade the existing e-commerce website, BradyID.com, and componentize JavaScript code."
           - "Created a single-page JavaScript app for product search and narrowed down categories and subcategories by interacting with the Elasticsearch API."
           - "Contributed to making the website mobile responsive using CSS, Sass, and flexbox."
@@ -154,7 +145,6 @@ experience:
     period: "September 2015 - May 2017"
     roles:
       - name: "CS-315: Assembly Language Programming - MIPS"
-        period: ""
         bullets:
           - "Conducted discussion and lab sessions."
           - "Wrote and graded questions for programming sections of the exams."
@@ -167,7 +157,6 @@ experience:
     period: "June 2015 - August 2015"
     roles:
       - name: "OBA Project (Scrum Team)"
-        period: ""
         bullets:
           - "Worked mainly with Underscore.js, Backbone.js, and the Backbone-forms module for the front end of the Outside Business Activity Wizard web application, and with Node.js and Express.js for proof-of-concept work."
           - "Added Grunt and Bower to build project dependencies, minify JavaScript files, and perform package management and versioning."
@@ -179,9 +168,7 @@ experience:
     title: "Undergraduate Researcher"
     period: "May 2013 - May 2015"
     roles:
-      - name: ""
-        period: ""
-        bullets:
+      - bullets:
           - "Worked with Dr. Pradeep Rohatgi (Distinguished Professor) to use MAGMA and SolidWorks to simulate the solidification of different materials and teach graduate students how to use the software, applying computational geometry and differential equations."
 
   - company: "Swick Technologies"
@@ -189,9 +176,7 @@ experience:
     title: "IT Specialist"
     period: "July 2011 - August 2011"
     roles:
-      - name: ""
-        period: ""
-        bullets:
+      - bullets:
           - "Worked with Active Directory and Microsoft Deployment Services to deploy Windows 7 on high school computers via PXE boot."
 
 honors:
