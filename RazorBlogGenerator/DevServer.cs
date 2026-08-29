@@ -127,7 +127,7 @@ public static class DevServer
             reloadScript.TextContent = """
                 (function(){
                   var conn = new signalR.HubConnectionBuilder().withUrl("/__livereload").withAutomaticReconnect().build();
-                  conn.on("Reload", function(){ location.reload(); });
+                  conn.on("Reload", function() { location.reload(); });
                   conn.start();
                 })();
                 """;

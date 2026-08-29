@@ -14,7 +14,7 @@ using static System.Text.RegularExpressions.Regex;
 
 namespace RazorBlogGenerator;
 
-public static class SiteGenerator
+public static partial class SiteGenerator
 {
     private static readonly Dictionary<string, Type> ModelRegistry = BuildModelRegistry();
 
@@ -198,22 +198,17 @@ public static class SiteGenerator
     internal static (string Html, List<string> PreBlocks) ExtractPreBlocks(string html)
     {
         var preBlocks = new List<string>();
-        var htmlWithPlaceholders = Replace(
-            html,
-            @"<pre\b[^>]*>.*?</pre>",
-            m =>
+        var htmlWithPlaceholders = ExtractPreTagRegex().Replace(html, m =>
             {
                 preBlocks.Add(m.Value);
                 return $"<div data-pre-block=\"{preBlocks.Count - 1}\"></div>";
-            },
-            RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            });
         return (htmlWithPlaceholders, preBlocks);
     }
 
     // Restores <pre> blocks that were extracted by ExtractPreBlocks.
     internal static string RestorePreBlocks(string html, List<string> preBlocks) =>
-        Replace(html, """<div data-pre-block="(\d+)"></div>""",
-            m => preBlocks[int.Parse(m.Groups[1].Value)]);
+        RestorePreTagRegex().Replace(html, m => preBlocks[int.Parse(m.Groups[1].Value)]);
 
     private static async Task<string> FormatHtmlAsync(string html)
     {
@@ -298,4 +293,10 @@ public static class SiteGenerator
             File.Copy(file, dest, overwrite: true);
         }
     }
+
+    [GeneratedRegex("""<div data-pre-block="(\d+)"></div>""")]
+    private static partial Regex RestorePreTagRegex();
+    
+    [GeneratedRegex(@"<pre\b[^>]*>.*?</pre>", RegexOptions.IgnoreCase | RegexOptions.Singleline, "en-US")]
+    private static partial Regex ExtractPreTagRegex();
 }
