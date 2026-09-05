@@ -1,0 +1,9 @@
+# $schema: ../../../RazorBlogGenerator/Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "Creating a voice+text chat with symmetric encryption using STUN and TURN"
+published_on: "2026-05-02"
+excerpt: "Setting up a voice chat via stun-turn with symmetric encryption is incredibly simpler and fun"
+tags:
+  - stun-turn
+  - "symmetric encryption"
