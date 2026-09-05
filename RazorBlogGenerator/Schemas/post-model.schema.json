@@ -78,6 +78,18 @@
         "hidden": {
           "type": "boolean"
         },
+        "website_url": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "github_url": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
         "rendered_html": {
           "type": "string"
         }

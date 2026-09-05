@@ -9,8 +9,6 @@ The stack is straightforward:
 
 - .NET + Razor Pages for the `/display` output, Blazor WebAssembly + Bootstrap 5 for the admin UI
 
-The source is on GitHub at [amir734jj/kiosk](https://github.com/amir734jj/kiosk), and the live display runs at [kiosk.hesamian.com/display](https://kiosk.hesamian.com/display).
-
 ![alt text](image.png)
 
 ## Handling refresh

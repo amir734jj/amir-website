@@ -7,3 +7,5 @@ excerpt: "Setting up a voice chat via stun-turn with symmetric encryption is inc
 tags:
   - stun-turn
   - "symmetric encryption"
+website_url: https://chat.coolify.hesamian.com
+github_url: https://github.com/amir734jj/symmetric-crypto-chat-room
