@@ -20,6 +20,7 @@ public static class StaticServer
 
         var app = builder.Build();
 
+        app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
         ConfigureStaticServing(app, fullPath);
 
         Log.Information("Serving {Path} at http://localhost:{Port}", fullPath, port);
@@ -77,7 +78,7 @@ public static class StaticServer
             ServeUnknownFileTypes = true
         });
 
-        app.Run(async context =>
+        app.MapFallback(async context =>
         {
             context.Response.StatusCode = 404;
             context.Response.ContentType = "text/plain";
