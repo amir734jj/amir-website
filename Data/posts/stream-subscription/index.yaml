@@ -7,5 +7,9 @@ excerpt: "A C# library and a full-stack app that rip online radio streams into t
 tags:
   - dotnet
   - angular
-github_url: https://github.com/amir734jj/Stream-ripper
-website_url: https://stream.coolify.hesamian.com
+github_url:
+  - https://github.com/amir734jj/Stream-ripper
+  - https://github.com/amir734jj/stream-subscription-ui
+  - https://github.com/amir734jj/stream-subscription-api
+website_url:
+  - https://stream.coolify.hesamian.com

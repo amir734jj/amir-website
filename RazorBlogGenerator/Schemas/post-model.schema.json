@@ -79,16 +79,16 @@
           "type": "boolean"
         },
         "website_url": {
-          "type": [
-            "null",
-            "string"
-          ]
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "github_url": {
-          "type": [
-            "null",
-            "string"
-          ]
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "rendered_html": {
           "type": "string"

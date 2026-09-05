@@ -6,4 +6,5 @@ published_on: "2026-05-03"
 excerpt: "I couldn't find a good blogging tool .. so I built one myself in C# and Razor"
 tags:
   - blogging
-github_url: https://github.com/amir734jj/amir-website
+github_url:
+  - https://github.com/amir734jj/amir-website

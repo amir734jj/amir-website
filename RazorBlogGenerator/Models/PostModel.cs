@@ -10,8 +10,8 @@ public class PostModel : ContentPage
     public string Excerpt { get; set; } = null!;
     public List<string> Tags { get; set; } = [];
     public bool Hidden { get; set; }
-    public string? WebsiteUrl { get; set; }
-    public string? GithubUrl { get; set; }
+    public List<string> WebsiteUrl { get; set; } = [];
+    public List<string> GithubUrl { get; set; } = [];
 
     [YamlIgnore]
     public string RenderedHtml { get; set; } = string.Empty;

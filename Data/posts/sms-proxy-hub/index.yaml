@@ -7,5 +7,7 @@ excerpt: "How a $6 Tello plan, an old Android phone, and a self-hosted proxy bec
 tags:
   - sms
   - self-hosting
-github_url: https://github.com/amir734jj/sms-proxy-hub
-website_url: https://sms-proxy-hub.coolify.hesamian.com
+github_url:
+  - https://github.com/amir734jj/sms-proxy-hub
+website_url:
+  - https://sms-proxy-hub.coolify.hesamian.com

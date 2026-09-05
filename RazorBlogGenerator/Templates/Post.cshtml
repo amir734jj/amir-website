@@ -9,18 +9,18 @@
   <p class="text-muted small">@post.PublishedOn</p>
   <h2 class="display-6 fw-bold">@post.Title</h2>
   <p class="lead text-secondary">@post.Excerpt</p>
-  @if (!string.IsNullOrWhiteSpace(post.GithubUrl) || !string.IsNullOrWhiteSpace(post.WebsiteUrl))
+  @if (post.GithubUrl.Count > 0 || post.WebsiteUrl.Count > 0)
   {
     <div class="d-flex gap-2 mb-3">
-      @if (!string.IsNullOrWhiteSpace(post.GithubUrl))
+      @foreach (var githubUrl in post.GithubUrl)
       {
-        <a href="@post.GithubUrl" target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm">
+        <a href="@githubUrl" target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm">
           <i class="bi bi-github"></i> GitHub
         </a>
       }
-      @if (!string.IsNullOrWhiteSpace(post.WebsiteUrl))
+      @foreach (var websiteUrl in post.WebsiteUrl)
       {
-        <a href="@post.WebsiteUrl" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm">
+        <a href="@websiteUrl" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm">
           <i class="bi bi-globe"></i> Website
         </a>
       }
