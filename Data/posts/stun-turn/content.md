@@ -38,7 +38,7 @@ Because TURN actually relays the raw binary data of the file transfer, it eats u
 
 ## Hosting Coturn in Docker
 
-To guarantee file transfers actually complete regardless of the users' network setups, I deployed my own STUN/TURN server using **Coturn**, the gold standard open-source implementation.
+To guarantee file transfers actually complete regardless of the users' network setups, I deployed my own STUN/TURN server using [**Coturn**](https://github.com/coturn/coturn), the gold standard open-source implementation.
 
 
 ## Tying it all together in Blazor
