@@ -42,18 +42,10 @@ public static class StaticServer
                 path = lower;
             }
 
-            if (path.EndsWith('/'))
-            {
-                var candidate = path + "index.html";
-                if (fileProvider.GetFileInfo(candidate).Exists)
-                {
-                    context.Request.Path = candidate;
-                }
-            }
-            else if (!Path.HasExtension(path))
+                if (!path.EndsWith('/') && !Path.HasExtension(path))
             {
                 var candidate = path + "/index.html";
-                if (fileProvider.GetFileInfo(candidate).Exists)
+                if (fileProvider.GetFileInfo(candidate.TrimStart('/')).Exists)
                 {
                     context.Response.Redirect(path + "/", permanent: false);
                     return;
@@ -65,6 +57,19 @@ public static class StaticServer
 
         app.Use(async (context, next) =>
         {
+                var path = context.Request.Path.Value ?? "/";
+                if (path.EndsWith('/'))
+                {
+                    var indexFile = fileProvider.GetFileInfo(path.TrimStart('/') + "index.html");
+                    if (indexFile.Exists && indexFile.PhysicalPath is not null)
+                    {
+                        context.Response.ContentType = "text/html; charset=utf-8";
+                        context.Response.Headers.CacheControl = "no-store";
+                        await context.Response.SendFileAsync(indexFile.PhysicalPath);
+                        return;
+                    }
+                }
+
             await next();
             if (context.Response.ContentType?.StartsWith("text/html", StringComparison.OrdinalIgnoreCase) == true)
             {
