@@ -2,13 +2,13 @@
 
 Online radio stations (IceCast/Shoutcast streams) play a continuous audio feed, but they don't hand you the individual songs. I wanted a way to "subscribe" to a station and have every track it plays land in my music library as a properly tagged MP3 -- without downloading and storing anything myself.
 
-This turned into a few projects that build on each other: a low-level ripping library, a directory crawler, a backend service, and a web UI. You can try the live app at [stream.coolify.hesamian.com](https://stream.coolify.hesamian.com/).
+This turned into a few projects that build on each other: a low-level ripping library, a directory crawler, a backend service, and a web UI. You can try the live app at stream.coolify.hesamian.com.
 
 ![alt text](image.png)
 
 ## Stream-ripper (the library)
 
-At the bottom of the stack is [Stream-ripper](https://github.com/amir734jj/Stream-ripper), a C# library published on [NuGet](https://www.nuget.org/packages/StreamRipper/). It connects to an IceCast stream, reads the inline metadata, and splits the continuous byte stream into separate songs -- firing an event each time a track changes so you can save it as its own MP3.
+At the bottom of the stack is Stream-ripper, a C# library published on [NuGet](https://www.nuget.org/packages/StreamRipper/). It connects to an IceCast stream, reads the inline metadata, and splits the continuous byte stream into separate songs -- firing an event each time a track changes so you can save it as its own MP3.
 
 The API is event driven:
 
@@ -38,11 +38,11 @@ I wrote it because I asked SHOUTcast for an API key and never heard back after m
 
 ## stream-subscription-api (the backend)
 
-[stream-subscription-api](https://github.com/amir734jj/stream-subscription-api) turns the library into a real service. You give it a stream URL and credentials for a file-sharing target, and it rips the stream into MP3s and uploads each finished song to your storage (FTP, Dropbox, and friends). The service never keeps the files -- it only stores them where you told it to.
+stream-subscription-api turns the library into a real service. You give it a stream URL and credentials for a file-sharing target, and it rips the stream into MP3s and uploads each finished song to your storage (FTP, Dropbox, and friends). The service never keeps the files -- it only stores them where you told it to.
 
 It's a .NET app that leans on a few things:
 
-- [Stream-ripper](https://github.com/amir734jj/Stream-ripper) to do the actual ripping
+- Stream-ripper to do the actual ripping
 - SignalR to push live logs and now-playing info to the browser in real time
 - ReactiveX to manage the concurrency of multiple subscriptions
 - Entity Framework Core as the ORM
@@ -50,7 +50,7 @@ It's a .NET app that leans on a few things:
 
 ## stream-subscription-ui (the frontend)
 
-[stream-subscription-ui](https://github.com/amir734jj/stream-subscription-ui) is the Angular front-end where you manage your subscriptions and watch songs get ripped live. It's built with Angular 8, Angular Material, and ngx-bootstrap, and talks to the backend over SignalR so the log and current track update as they happen.
+stream-subscription-ui is the Angular front-end where you manage your subscriptions and watch songs get ripped live. It's built with Angular 8, Angular Material, and ngx-bootstrap, and talks to the backend over SignalR so the log and current track update as they happen.
 
 A couple of fun touches:
 

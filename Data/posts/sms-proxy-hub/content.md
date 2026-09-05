@@ -10,7 +10,7 @@ I had a old Android phone and bought a Tello plan for about $6 per month. The ph
 
 I installed [SmsGate](https://sms-gate.app/) on it, which exposes the phone's messaging capabilities through an API. That solved the device side, but I still needed a clean way (via api-key + webhook callback with payload) for my applications to send messages, receive replies, and associate each reply with the operation that initiated the conversation.
 
-That became [**SMS Proxy Hub**](https://github.com/amir734jj/sms-proxy-hub).
+That became **SMS Proxy Hub**.
 
 ![alt text](image.png)
 

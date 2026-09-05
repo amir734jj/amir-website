@@ -2,7 +2,7 @@
 
 When building resilient, distributed systems, one of the fundamental challenges is node health monitoring and failure detection without relying on a central coordinator. Service Fabric solves this through a low-level, peer-to-peer **Lease Subsystem**.
 
-To better understand how node heartbeat exchanges, lease relationships, and federation rings behave under various network conditions, I built [**`dotnet-lease-simulation`**](https://lease-simulation.coolify.hesamian.com/) an interactive visual simulator written in C# using **Avalonia UI**.
+To better understand how node heartbeat exchanges, lease relationships, and federation rings behave under various network conditions, I built **`dotnet-lease-simulation`**, an interactive visual simulator written in C# using **Avalonia UI**.
 
 ## Background
 

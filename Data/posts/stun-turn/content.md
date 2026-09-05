@@ -4,7 +4,7 @@ If you've ever tried to build a real-time chat app with peer-to-peer file sharin
 
 In reality, routers, firewalls, and NAT (Network Address Translation) exist. They act like paranoid bouncers, dropping direct connections before they even reach your machine.
 
-In my project, [**`symmetric-crypto-chat-room`**](https://chat.coolify.hesamian.com/)—an end-to-end encrypted chat room built with Blazor and SignalR—I wanted users to be able to exchange text messages, voice, and files (up to 50MB) without my server ever seeing the plaintext or storing the unencrypted data. Text message communication runs through SignalR, while voice and file transfers use WebRTC. To make file and voice connections work across the messy reality of the internet, I had to implement WebRTC and deploy a STUN/TURN server.
+In my project, **`symmetric-crypto-chat-room`**—an end-to-end encrypted chat room built with Blazor and SignalR—I wanted users to be able to exchange text messages, voice, and files (up to 50MB) without my server ever seeing the plaintext or storing the unencrypted data. Text message communication runs through SignalR, while voice and file transfers use WebRTC. To make file and voice connections work across the messy reality of the internet, I had to implement WebRTC and deploy a STUN/TURN server.
 
 Here is the plain-English breakdown of what these technologies do, how they bypass network restrictions, and how I hosted my own Coturn relay using Docker.
 
