@@ -1,0 +1,9 @@
+# $schema: ../../../RazorBlogGenerator/Schemas/post-model.schema.json
+model: PostModel
+template: Post.cshtml
+title: "Trying to simulate service fabric lease"
+published_on: "2026-09-05"
+excerpt: "Avalonia is incredibly cool, Service Fabric federation is cooler"
+tags:
+  - "service fabric"
+  - Avalonia
