@@ -7,3 +7,7 @@ excerpt: "Avalonia is incredibly cool, Service Fabric federation is cooler"
 tags:
   - "service fabric"
   - Avalonia
+website_url:
+  - https://lease-simulation.coolify.hesamian.com/
+github_url:
+  - https://github.com/amir734jj/dotnet-lease-simulation
