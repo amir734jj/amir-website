@@ -34,6 +34,7 @@ projects:
     description: "A real-time chat application using symmetric key cryptography for encrypted communication."
     github_url: "https://github.com/amir734jj/symmetric-crypto-chat-room"
     website_url: "https://chat.hesamian.com"
+    blog_url: "https://amir.coolify.hesamian.com/posts/stun-turn/"
     image: "./images/chat.png"
 
   - name: "Amir Website"
