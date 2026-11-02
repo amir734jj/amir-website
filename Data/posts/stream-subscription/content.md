@@ -2,7 +2,7 @@
 
 Online radio stations (IceCast/Shoutcast streams) play a continuous audio feed, but they don't hand you the individual songs. I wanted a way to "subscribe" to a station and have every track it plays land in my music library as a properly tagged MP3 -- without downloading and storing anything myself.
 
-This turned into a few projects that build on each other: a low-level ripping library, a directory crawler, a backend service, and a web UI. You can try the live app at stream.coolify.hesamian.com.
+This turned into a few projects that build on each other: a low-level ripping library, a directory crawler, a backend service, and a web UI. You can try the live app at stream.hesamian.com.
 
 ![alt text](image.png)
 
